@@ -1,91 +1,28 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Enviando ficheiro</title>
+    <title>Portal de Inicio</title>
+    <link rel="stylesheet" href="../estilos/estilos.css">
+    <script async type="module" src="../funciones/index.js"></script>
   </head>
   <body>
-    <!-- <nav>
-      <a href="./">home</a>
-      <a href="./somos">quenes somos</a>
-      <a href="./contacto">contacto</a>
-      <a href="./contacto.html">contacto.html</a>
-    </nav>
-    Estou en Index -->
-    <img src="./imags/buscador.png" style="width: 20px;">
-
     <form id="formRexistro" name="rexistro" enctype="multipart/form-data">
 
-      <input name="nome" type="text" placeholder="Introduce nome" />
-      <input name="apelido1" type="text" placeholder="Introduce apelido1" />
-      <input name="apelido2" type="text" placeholder="Introduce apelido2" />
+      <input name="user" type="text" placeholder="Introduce User" />
+      <input name="pwd" type="password" placeholder="Introduce o teu pasword" />
       <input name="usuario" type="file" placeholder="introduce o ficheiro" />
-
       <button id="rexistrarUsuario">enviar</button>
 
     </form>
-    <!--  <button id="crearLocal">Crear localStorage</button>
-    <button id="borrarLocal">Borrar localStorage</button>
-    <button id="crearSession">Crear sessionStorage</button>
-    <button id="borrarSession">Borrar sessionStorage</button>
-    <button id="envioDatosParams">paso datos params</button>
-    <button id="envioDatosQuery">paso datos query</button>
-    <button id="reciboDatosGet">recibo datos GET con async/await</button>
-    <button id="reciboDatosGet2">recibo datos GET con fetch/then</button> -->
-    <script>
-      rexistrarUsuario.addEventListener("click", async (e) => {
-        e.preventDefault();
-        let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
+    <form id="formLogin" name="Login" enctype="multipart/form-data">
 
-        let result = await response.json();
-        console.log("resposta de rexistrarUsuario: ", result);
-      });
-      /* crearLocal.addEventListener("click", function crearLocal() {
-        localStorage.setItem("test", 1);
-        console.log(localStorage.getItem("test"));
-      });
-      borrarLocal.addEventListener("click", function borrarLocal() {
-        localStorage.removeItem("test");
-      });
-      crearSession.addEventListener("click", function crearSession() {
-        sessionStorage.setItem("clave", "Jacinto");
-        console.log(sessionStorage.getItem("clave"));
-      });
-      borrarSession.addEventListener("click", function borrarSession() {
-        sessionStorage.removeItem("clave");
-      });
+      <input name="user" type="text" placeholder="Introduce User" />
+      <input name="pwd" type="password" placeholder="Introduce o teu pasword" />
+      <button id="rexistrarUsuario">enviar</button>
 
-      envioDatosParams.addEventListener("click", async () => {
-        let response = await fetch("/datos/4");
-      });
-      envioDatosQuery.addEventListener("click", async () => {
-        let response = await fetch("/datosquery/?name=Juan&apelido=fernandez");
-      });
-      reciboDatosGet.addEventListener("click", async () => {
-        let response = await fetch("/backEnviaDatos");
-        let result = await response.json();
-        console.log("datos que envía o back: ", result);
-      });
-      reciboDatosGet2.addEventListener("click", () => {
-        const _fetch = fetch("./backEnviaDatos");
-
-        _fetch
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`HTTP error: ${response.status}`);
-            }
-            //console.log("response é: ", response);
-            console.log(`a varible response é: ${response}`);
-            return response.json();
-          })
-          .then((data) => {
-            console.log(data);
-          });
-      });
-*/
-      
-    </script>
+    </form>
   </body>
 </html>
