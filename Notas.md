@@ -9,4 +9,4 @@ git push -u origin main
 ```
 
 ## Arranque do server
-> Teño instalado o módulo `nodemon`, e o teño configurado para que arranque con `npm start` 
+> Teño instalado o módulo `nodemon`, e o teño configurado para que arranque con `npm start`
