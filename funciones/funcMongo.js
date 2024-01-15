@@ -22,7 +22,7 @@ async function buscarUsuario(usuario) {
     const db = client.db(database);
     const coll = db.collection(coleccion);
     
-    const result = coll.find(usuario)
+    const result = coll.find({user: "ad", pwd:"asdf"});//(usuario);
     console.log(result);
   
   } finally {

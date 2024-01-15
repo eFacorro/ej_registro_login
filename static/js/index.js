@@ -31,7 +31,7 @@ rexistrarUsuario.addEventListener("click", async (e) => {
 
 loginUsuario.addEventListener("click", async (e) => {
   e.preventDefault();
-  let response = await fetch("/login", {method: "POST",body: new FormData(formRexistro) });
+  let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
   let result = await response.json();
   console.log("resposta de loginUsuario: ", result);
 });
