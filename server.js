@@ -1,4 +1,5 @@
-const { RexistroUser } = require("./static/funciones/funcions.js");
+const { RexistroUser,
+  loginUser } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -15,6 +16,7 @@ const carpetaStatic = path.join(__dirname, "static");
 app.use(express.static(carpetaStatic));
 
 app.post("/rexistro", RexistroUser);
+app.post("/login", loginUser);
 
 app.listen(3000, function () {
   console.log("Server running");
