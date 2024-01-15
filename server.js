@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { RexistroUser,
   loginUser } = require("./funcions.js");
 const express = require("express");
