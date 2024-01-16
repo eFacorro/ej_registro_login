@@ -22,8 +22,16 @@ async function buscarUsuario(usuario) {
     const db = client.db(database);
     const coll = db.collection(coleccion);
     
-    const result = coll.find({user: "ad", pwd:"asdf"});//(usuario);
-    console.log(result);
+    const result = coll.find(usuario);//(usuario);
+
+    for await(const key of result){
+      if (key.user === usuario.user && key.pwd === usuario.pwd){
+        if (key.admin === true){
+          console.log("admin");
+        }
+        console.log("match");
+      }
+    }
   
   } finally {
     await client.close();

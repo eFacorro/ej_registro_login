@@ -1,5 +1,6 @@
 require('dotenv').config()
-const { RexistroUser,
+const { 
+  RexistroUser,
   loginUser } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
@@ -18,6 +19,7 @@ app.use(express.static(carpetaStatic));
 
 app.post("/rexistro", RexistroUser);
 app.post("/login", loginUser);
+app.post("/perfil");
 
 app.listen(3000, function () {
   console.log("Server running");
