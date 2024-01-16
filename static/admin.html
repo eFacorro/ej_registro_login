@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="estilos/admin.css" rel="stylesheet">
+    <script async type="module" src="./js/admin.js"></script>
+    <title>Enviando ficheiro</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="./salir">Salir</a>
+      </nav>
+    </header>
+    <main>
+      <section class="usuarios">
+        <div class="lista-usuarios">
+         
+        </div>
+      </section>
+      <section class="form">
+        <aside>
+            <form id="formRexistro" name="rexistro" enctype="multipart/form-data">
+                <input name="user" type="text" placeholder="Usuario" />
+                <span></span>
+                <input name="pwd" type="password" placeholder="Contraseña" />
+                <input name="usuario" type="file" />
+                <input name="nombre" type="text" placeholder="Nombre" />
+                <input name="PrimerApellido" type="text" placeholder="Primer Apellido" />
+                <input name="SegundoApellido" type="text" placeholder="Segundo Apellido" />
+                <input name="fechaNacimiento" type="date" />
+                <button id="rexistrarUsuario">enviar</button>
+              </form>
+        </aside>
+      </section>
+    </main>
+    <button id="lerusuarios">Leo usuarios</button>
+  </body>
+</html>

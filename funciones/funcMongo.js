@@ -16,7 +16,7 @@ async function insertarUsuario(usuario) {
   }
 }
 
-async function comprobarLogin(usuario) {
+async function comprobarLogin(usuario, req, res, next) {
   try {
     await client.connect();
     const db = client.db(database);
@@ -28,43 +28,70 @@ async function comprobarLogin(usuario) {
       if (key.user === usuario.user && key.pwd === usuario.pwd){
         if (key.admin === true){
           console.log("admin");
+          res.send({status: true, msg: "Admin"});
+          next();
           return
         }
         console.log("usuario y contraseña correctos");
+        res.send({status: true, msg: "Usuario y contraseña correctos"});
+        next();
         return
       }
     }
     
     console.log("usuario y/o contraseña incorrectos");
+    res.send({status: false, msg: "Usuario y/o contraseña incorrectos"});
   
   } finally {
     await client.close();
   }
 }
 
-async function comprobarUser(usuario){
+async function comprobarUser(usuario, res){
   try {
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
-    
-    const result = coll.find({});//(usuario);
+    const busqueda = {user: usuario.user}
+    const result = coll.find(busqueda);//(usuario);
 
     for await(const key of result){
       if (key.user === usuario.user){
         console.log("ya existe");
+        res.send({status: true, msg: "El usuario ya existe"});
         return
       }
     }
-    console.log("no existe")
+    
+    res.send({status: false, msg: "El usuario es nuevo"});
   
   } finally {
     await client.close();
   }
 }
 
+async function leerTodo() {
+  try {
+    await client.connect();
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    const result = coll.find({})
+    
+    let datosUsers = []
+    
+    for await(const documento of result){
+      datosUsers.push(documento)      
+    }
+    return datosUsers
+  } finally {
+    await client.close();
+  }
+}
+
+
 module.exports = {
   insertarUsuario,
   comprobarLogin,
-  comprobarUser
+  comprobarUser,
+  leerTodo
 }

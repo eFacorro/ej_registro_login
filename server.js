@@ -2,7 +2,9 @@ require('dotenv').config()
 const { 
   RexistroUser,
   loginUser,
-  checkUser } = require("./funcions.js");
+  checkUser,
+  mostrarPagina,
+  LeerUsers } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -19,9 +21,11 @@ const carpetaStatic = path.join(__dirname, "static");
 app.use(express.static(carpetaStatic));
 
 app.post("/rexistro", RexistroUser);
-app.post("/login", loginUser);
+app.post("/login", loginUser, mostrarPagina);
 app.post("/check", checkUser);
-app.post("/perfil");
+app.get("/leerTodo", LeerUsers);
+app.get("/admin", mostrarPagina);
+app.get("/perfil");
 
 app.listen(3000, function () {
   console.log("Server running");

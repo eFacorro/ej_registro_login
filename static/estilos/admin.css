@@ -1,0 +1,100 @@
+*{
+    margin:0;
+    padding: 0;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 13px;
+    margin-right: 20px;
+    border: 3px solid black; 
+    border-top-left-radius: 30px;
+    border-top-color: #3b3be5;
+    border-left-color: blue;
+    border-bottom: transparent;
+    border-right: transparent;
+    
+    background-color: rgb(175, 135, 212);
+}
+form > input{
+    border: 1px solid transparent;
+    border-bottom: 1px solid black;
+    margin: 10px;
+    font-size: 15px;
+    padding: 3px;
+}
+input[name="usuario"]{
+    border-bottom: transparent;
+}
+input[name="nome"]{
+    border-top-left-radius: 8px;
+}
+header{
+    display:flex;
+    justify-content: center;
+    padding:2vh;
+}
+a{
+    padding:5px;
+    border: 1px transparent;
+    border-bottom: 1px solid black;
+    color:black;
+    text-decoration:none;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+a:visited,a:active{
+    color:black;
+}
+a:hover{
+    cursor: pointer;
+    font-size: 1.1em;
+    color:white;
+    background-color: rgb(106, 106, 237);
+}
+
+nav{
+    display:flex;
+    gap:10px;
+}
+main{
+    display:flex;
+    gap:10px
+}
+section.usuarios{
+    flex:2;
+    
+}
+section.form{
+    flex:1;
+}
+
+/* lista usuarios */
+
+.lista-usuarios{
+    background-color: #c3c3d4;
+    margin:15px;
+}
+.lista-usuarios > div {
+    display: flex;
+    align-items: center;
+}
+input[name="lista"]{
+    cursor: pointer;
+    margin: 5px;
+    padding:5px;
+    border-bottom: white;
+}
+input[name="lista"]:focus{
+    background-color: yellowgreen;
+}
+
+/* imaxen */
+img{
+    width: 20px;
+    cursor: pointer;
+    margin: 5px;
+}

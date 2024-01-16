@@ -1,9 +1,11 @@
 const {
   insertarUsuario,
   comprobarLogin,
-  comprobarUser } = require("./funciones/funcMongo.js")
+  comprobarUser,
+  leerTodo } = require("./funciones/funcMongo.js")
 const path = require("path");
-const staticRoute2 = path.join(__dirname, "static\\imgs\\");// sistema en windows
+const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
+const carpetaStatic = path.join(__dirname, "static\\");
 
 const RexistroUser = (req, res) => {
   let sampleFile;
@@ -21,7 +23,7 @@ const RexistroUser = (req, res) => {
   }
   else {
     sampleFile = req.files.usuario;
-    uploadPath = staticRoute2 + doc.user + sampleFile.name.slice(sampleFile.name.indexOf("."));
+    uploadPath = staticImg + doc.user + sampleFile.name.slice(sampleFile.name.indexOf("."));
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       let dato = {
@@ -32,12 +34,22 @@ const RexistroUser = (req, res) => {
   }
 };
 
-const loginUser = (req, res) => {
-  comprobarLogin({user: req.body.user, pwd: req.body.pwd})
+const loginUser = (req, res, next) => {
+  comprobarLogin({user: req.body.user, pwd: req.body.pwd}, req, res, next)
+}
+
+const mostrarPagina = (req, res) => {
+  // console.log(req.body);
+  // if (req.body.user === "admin"){
+    res.sendFile("admin.html", { root: carpetaStatic });
+  // } else {
+  //   res.sendFile("perfil.html", { root: carpetaStatic });
+  // }
+  
 }
 
 const checkUser = (req, res) => {
-  comprobarUser({user: req.body.user});
+  comprobarUser({user: req.body.user}, res);
 }
 
 function estructurarDatos(datos){
@@ -50,8 +62,18 @@ function estructurarDatos(datos){
   return datos;
 }
 
+const LeerUsers = async (req,res) => {
+  let users = await leerTodo();
+  let result = {
+    datos: users
+  }
+  res.send(result)
+}
+
 module.exports = {
   RexistroUser,
   loginUser,
-  checkUser
+  checkUser,
+  mostrarPagina,
+  LeerUsers
 };
