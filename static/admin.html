@@ -11,31 +11,33 @@
   <body>
     <header>
       <nav>
+        <a id="lerusuarios" href="#">Recargar</a>
         <a href="./salir">Salir</a>
       </nav>
     </header>
-    <main>
-      <section class="usuarios">
-        <div class="lista-usuarios">
-         
-        </div>
-      </section>
-      <section class="form">
-        <aside>
-            <form id="formRexistro" name="rexistro" enctype="multipart/form-data">
-                <input name="user" type="text" placeholder="Usuario" />
-                <span></span>
-                <input name="pwd" type="password" placeholder="Contraseña" />
-                <input name="usuario" type="file" />
-                <input name="nombre" type="text" placeholder="Nombre" />
-                <input name="PrimerApellido" type="text" placeholder="Primer Apellido" />
-                <input name="SegundoApellido" type="text" placeholder="Segundo Apellido" />
-                <input name="fechaNacimiento" type="date" />
-                <button id="rexistrarUsuario">enviar</button>
-              </form>
-        </aside>
-      </section>
-    </main>
-    <button id="lerusuarios">Leo usuarios</button>
+    <div>
+      <main>
+        <section class="usuarios">
+          <div class="lista-usuarios">
+          
+          </div>
+        </section>
+        <section class="form">
+          <aside>
+              <form id="formRexistro" name="rexistro" enctype="multipart/form-data">
+                  <input name="user" type="text" placeholder="Usuario" />
+                  <span></span>
+                  <input name="pwd" type="password" placeholder="Contraseña" />
+                  <input name="usuario" type="file" />
+                  <input name="nombre" type="text" placeholder="Nombre" />
+                  <input name="primerApellido" type="text" placeholder="Primer Apellido" />
+                  <input name="segundoApellido" type="text" placeholder="Segundo Apellido" />
+                  <input name="fechaNacimiento" type="date" />
+                  <button id="rexistrarUsuario">Enviar</button>
+                </form>
+          </aside>
+        </section>
+      </main>
+    </div>
   </body>
 </html>
