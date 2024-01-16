@@ -1,7 +1,8 @@
 require('dotenv').config()
 const { 
   RexistroUser,
-  loginUser } = require("./funcions.js");
+  loginUser,
+  checkUser } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -19,6 +20,7 @@ app.use(express.static(carpetaStatic));
 
 app.post("/rexistro", RexistroUser);
 app.post("/login", loginUser);
+app.post("/check", checkUser);
 app.post("/perfil");
 
 app.listen(3000, function () {

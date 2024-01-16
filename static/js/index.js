@@ -33,5 +33,13 @@ loginUsuario.addEventListener("click", async (e) => {
   e.preventDefault();
   let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
   let result = await response.json();
-  console.log("resposta de loginUsuario: ", result);
+  console.log("resposta de loginUsuario: ", result);[]
+});
+
+let newUser = document.querySelector("#formRexistro > input[name='user']")
+newUser.addEventListener("change", async (e) => {
+  e.preventDefault();
+  let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
+  let result = await response.json();
+  console.log("resposta de checkUser: ", result);[]
 });

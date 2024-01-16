@@ -1,5 +1,7 @@
-const { insertarUsuario,
-  buscarUsuario } = require("./funciones/funcMongo.js")
+const {
+  insertarUsuario,
+  comprobarLogin,
+  comprobarUser } = require("./funciones/funcMongo.js")
 const path = require("path");
 const staticRoute2 = path.join(__dirname, "static\\imgs\\");// sistema en windows
 
@@ -31,7 +33,11 @@ const RexistroUser = (req, res) => {
 };
 
 const loginUser = (req, res) => {
-  buscarUsuario({user: req.body.user, pwd: req.body.pwd})
+  comprobarLogin({user: req.body.user, pwd: req.body.pwd})
+}
+
+const checkUser = (req, res) => {
+  comprobarUser({user: req.body.user});
 }
 
 function estructurarDatos(datos){
@@ -47,4 +53,5 @@ function estructurarDatos(datos){
 module.exports = {
   RexistroUser,
   loginUser,
+  checkUser
 };
