@@ -19,7 +19,9 @@ const RexistroUser = async (req, res) => {
   
   if (!req.files || Object.keys(req.files).length === 0) {
     // return res.status(400).send("O ficheiro non foi actualizado.");
-    dato.msg = "Sin imagen personalizada";
+    dato = {
+      msg : "Sin imagen personalizada"
+    }
   }
   else {
     sampleFile = req.files.usuario;
@@ -27,7 +29,9 @@ const RexistroUser = async (req, res) => {
     uploadPath = staticImg + img;
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
-      dato.msg = "Imagen guardada";
+      dato = {
+        msg : "Imagen guardada"
+      }
     });
   }
   doc.img = img;

@@ -45,11 +45,16 @@ function registroUser(){
     e.preventDefault();
     let newUser = document.querySelector("#formRexistro > input[name='user']");
     let checkUser = await funcCheckNuewUser(newUser);
-    console.log(checkUser);
-    if (checkUser){
+    let pass = document.querySelector("#formRexistro > input[name='pwd']");
+    let checkPwd = await funcCheckPass(pass);
+    if (checkUser && checkPwd){
       let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
       let result = await response.json();
       console.log("resposta de rexistrarUsuario: ", result);
+      if(e.srcElement.baseURI.includes("/admin")){
+        creoTarjeta(result.user);
+      }
+      formRexistro.reset();
     }
   });
 }
@@ -63,11 +68,18 @@ function checkNewUser(){
 }
 
 async function funcCheckNuewUser(newUser){
-  let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
-  let result = await response.json();
-  console.log("resposta de checkUser: ", result);
-
+  let result;
   let ref = document.querySelector("#formRexistro > span");
+  if(newUser.value < 4) {
+    ref.innerText = "El usuario minimo 4 caracteres";
+    ref.style.display = "block";
+    rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto
+    return false
+  } else {
+    let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
+    result = await response.json();
+    console.log("resposta de checkUser: ", result);
+  }
   ref.innerText = result.msg;
   if (result.status){
     ref.style.display = "block";
@@ -77,6 +89,28 @@ async function funcCheckNuewUser(newUser){
   } else {
     ref.style.display = "none";
     newUser.style.color = "black";
+    rexistrarUsuario.disabled = false;
+    return true
+  }
+}
+
+function checkPass(){
+  let pass = document.querySelector("#formRexistro > input[name='pwd']");
+  pass.addEventListener("change", (e) => {
+    e.preventDefault();
+    funcCheckPass(pass);
+  });
+}
+
+function funcCheckPass(pass){
+  let ref = document.querySelector("#formRexistro > span:nth-child(4)");
+  if(pass.value.length < 4){
+    ref.innerText = "Contraseña minima 4 caracteres";
+    ref.style.display = "block";
+    rexistrarUsuario.disabled = true;
+    return false
+  } else {
+    ref.style.display = "none";
     rexistrarUsuario.disabled = false;
     return true
   }
@@ -149,5 +183,6 @@ export {
   eventoEditar,
   eventoGuardar,
   eventoBorrar,
-  eventoRecargar
+  eventoRecargar,
+  checkPass
 }

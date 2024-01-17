@@ -4,9 +4,11 @@ import {
 import {
   checkNewUser,
   registroUser,
-  eventoRecargar} from "./eventos.js"
+  eventoRecargar,
+  checkPass} from "./eventos.js"
 
 cargarUsuario();
 registroUser();
 checkNewUser();
 eventoRecargar();
+checkPass();
