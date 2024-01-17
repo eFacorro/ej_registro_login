@@ -1,3 +1,6 @@
+import {
+  cargarUsuario} from "./helpers.js";
+
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
     e.preventDefault();
@@ -98,6 +101,18 @@ function eventoBorrar(id){
   })
 }
 
+function eventoRecargar(){
+  recargar.addEventListener("click", (e) => {
+    e.preventDefault();
+    let form;
+    do {
+      form = document.querySelector(".lista-usuarios > form");
+      form.remove()
+    } while (document.querySelector(".lista-usuarios > form") != undefined);
+    cargarUsuario();
+  })
+}
+
 export {
   botonRegistro,
   botonLogin,
@@ -106,5 +121,6 @@ export {
   checkNewUser,
   eventoEditar,
   eventoGuardar,
-  eventoBorrar
+  eventoBorrar,
+  eventoRecargar
 }

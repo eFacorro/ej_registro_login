@@ -104,10 +104,18 @@ function creoTarjeta(usuario){
   eventoEditar(id);
   eventoGuardar(id);
   eventoBorrar(id);
+}
 
+async function cargarUsuario(){
+  let datos = {
+    endpoint: '/leerTodo'
+  }
+  let usuarios = await comunicandoServer(datos);
+  for(let usuario of usuarios.datos){
+    creoTarjeta(usuario);
+  }
 }
 
 export {
-  comunicandoServer,
-  creoTarjeta
+  cargarUsuario
 }
