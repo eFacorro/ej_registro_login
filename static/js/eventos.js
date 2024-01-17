@@ -70,10 +70,10 @@ function checkNewUser(){
 async function funcCheckNuewUser(newUser){
   let result;
   let ref = document.querySelector("#formRexistro > span");
-  if(newUser.value < 4) {
+  if(newUser.value.length < 4) {
     ref.innerText = "El usuario minimo 4 caracteres";
     ref.style.display = "block";
-    rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto
+    rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto el boton no funciona bien
     return false
   } else {
     let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
