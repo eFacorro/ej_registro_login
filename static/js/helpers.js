@@ -1,3 +1,8 @@
+import { 
+  eventoEditar,
+  eventoGuardar,
+  eventoBorrar } from "./eventos.js"
+
 const comunicandoServer = async (datos)=>{
   let response;
   if(datos.tipoComunicacion !== undefined){
@@ -11,8 +16,11 @@ const comunicandoServer = async (datos)=>{
 }
 
 function creoTarjeta(usuario){
+  let id = "id" + usuario._id.toString()
   let ref = document.querySelector(".lista-usuarios");
   let form = document.createElement("form");
+  form.setAttribute("id", id)
+
   let img = document.createElement("img");
   img.setAttribute("src", "./imgs/" + usuario.img)
   
@@ -92,6 +100,10 @@ function creoTarjeta(usuario){
   div.appendChild(edit);
   div.appendChild(save);
   div.appendChild(del);
+
+  eventoEditar(id);
+  eventoGuardar(id);
+  eventoBorrar(id);
 
 }
 

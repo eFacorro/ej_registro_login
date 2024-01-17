@@ -65,10 +65,46 @@ function checkNewUser(){
   });
 }
 
+function eventoEditar(id){
+  let botonEditar = document.querySelector("#" + id + " > div > input[value='Editar']");
+  botonEditar.addEventListener("click", (e) => {
+    e.preventDefault();
+    let form = document.querySelectorAll("#" + id + " > input");
+    for (let input of form){
+      input.disabled = false;
+    }
+  })
+}
+
+function eventoGuardar(id){
+  let botonEditar = document.querySelector("#" + id + " > div > input[value='Guardar']");
+  botonEditar.addEventListener("click", (e) => {
+    e.preventDefault();
+    let form = document.querySelectorAll("#" + id + " > input");
+    for (let input of form){
+      input.disabled = true;
+    }
+    // guardar datos nuevos en base de datos
+  })
+}
+
+function eventoBorrar(id){
+  let botonEditar = document.querySelector("#" + id + " > div > input[value='Borrar']");
+  botonEditar.addEventListener("click", (e) => {
+    e.preventDefault();
+    let form = document.querySelector("#" + id);
+    form.remove()
+    // borrar datos nuevos en base de datos
+  })
+}
+
 export {
   botonRegistro,
   botonLogin,
   loginUser,
   registroUser,
-  checkNewUser
+  checkNewUser,
+  eventoEditar,
+  eventoGuardar,
+  eventoBorrar
 }
