@@ -14,7 +14,7 @@ function creoTarjeta(usuario){
   let ref = document.querySelector(".lista-usuarios");
   let form = document.createElement("form");
   let img = document.createElement("img");
-  img.setAttribute("src", "./imgs/default.png")
+  img.setAttribute("src", "./imgs/" + usuario.img)
   
   let user = document.createElement("input");
   user.setAttribute("name", "user");

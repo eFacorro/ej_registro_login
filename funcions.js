@@ -9,10 +9,10 @@ const carpetaStatic = path.join(__dirname, "static\\");
 
 const RexistroUser = (req, res) => {
   let sampleFile;
+  let img = "default.png";
   let uploadPath;
 
   const doc = estructurarDatos(req.body)
-  insertarUsuario(doc)
   
   if (!req.files || Object.keys(req.files).length === 0) {
     // return res.status(400).send("O ficheiro non foi actualizado.");
@@ -23,7 +23,8 @@ const RexistroUser = (req, res) => {
   }
   else {
     sampleFile = req.files.usuario;
-    uploadPath = staticImg + doc.user + sampleFile.name.slice(sampleFile.name.indexOf("."));
+    img = doc.user + req.files.usuario.name.slice(req.files.usuario.name.indexOf("."));
+    uploadPath = staticImg + img;
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
       let dato = {
@@ -32,6 +33,8 @@ const RexistroUser = (req, res) => {
       res.status(200).send(dato);
     });
   }
+  doc.img = img;
+  insertarUsuario(doc) //puede ser buena idea que la imgen se llame por la id
 };
 
 const loginUser = (req, res, next) => {
