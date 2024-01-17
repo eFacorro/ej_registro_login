@@ -92,28 +92,48 @@ async function leerTodo() {
 
 async function actualizarUsuario(datos) {
   try {
-    console.log('Estou en updateUsuario: ', datos)
+    console.log('Estou en actualizarUsuario: ', datos)
     await client.connect();
-      const db = client.db(database);
-      const coll = db.collection(coleccion);
-      datos._id = new ObjectId(datos._id);
-      console.log(datos._id);
-      const filtro ={
-          _id: datos._id
-      }
-      const dato = [{$set: datos}];
-      const result = await coll.updateOne(filtro,dato);
-    console.log(result)
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    datos._id = new ObjectId(datos._id);
+    console.log(datos._id);
+    const filtro ={
+        _id: datos._id
+    }
+    const dato = {$set: datos};
+    const reset = {$unset: {user:"", pwd: "", nombre: "", primerApellido: "", segundoApellido: "", fechaNacimiento: ""}}
+    const resultReset = await coll.updateOne(filtro,reset);
+    console.log(resultReset);
+    const result = await coll.updateOne(filtro,dato);
+    console.log(result);
   } finally {
     await client.close();
   }
 }
 
+async function borrarUsuario(id) {
+  try {
+    console.log('Estou en BorrarUsuario: ',id)
+    await client.connect();
+      const db = client.db(database);
+      const coll = db.collection(coleccion);
+      const dato ={
+          _id:new ObjectId(id)
+      }
+      const result = await coll.deleteOne(dato);
+    console.log(result)
+  } finally {
+    await client.close();
+   
+  }
+}
 
 module.exports = {
   insertarUsuario,
   comprobarLogin,
   comprobarUser,
   leerTodo,
-  actualizarUsuario
+  actualizarUsuario,
+  borrarUsuario
 }
