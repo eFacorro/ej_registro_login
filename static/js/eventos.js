@@ -83,21 +83,16 @@ function eventoGuardar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Guardar']");
   botonEditar.addEventListener("click", async (e) => {
     e.preventDefault();
-    let formularios = new FormData();
-    formularios.append("_id", id.slice(2))
+    let formulario = new FormData();
+    formulario.append("_id", id.slice(2));
 
     let form = document.querySelectorAll("#" + id + " > input");
     for (let input of form){
       input.disabled = true;
-      formularios.append(input.name, input.value);
-    }
-    for(let [name, value] of formularios) {
-      console.log(`${name} = ${value}`); // key1 = value1, luego key2 = value2
+      formulario.append(input.name, input.value);
     }
     
-    let formId = document.querySelector("#" + id);
-    console.log(formularios)
-    let response = await fetch("/update", {method: "POST", body: formularios});
+    let response = await fetch("/update", {method: "POST", body: formulario});
     let result = await response.json();
     console.log("resposta de guardarUsuario: ", result);
   })
@@ -105,11 +100,17 @@ function eventoGuardar(id){
 
 function eventoBorrar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Borrar']");
-  botonEditar.addEventListener("click", (e) => {
+  botonEditar.addEventListener("click", async (e) => {
     e.preventDefault();
+    
     let form = document.querySelector("#" + id);
     form.remove()
-    // borrar datos nuevos en base de datos
+
+    let formulario = new FormData();
+    formulario.append("_id", id.slice(2));
+    let response = await fetch("/delete", {method: "POST", body: formulario});
+    let result = await response.json();
+    console.log("resposta de borrarUsuario: ", result);
   })
 }
 
