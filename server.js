@@ -4,7 +4,8 @@ const {
   loginUser,
   checkUser,
   mostrarPagina,
-  LeerUsers } = require("./funcions.js");
+  LeerUsers,
+  updateUsuario } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -23,6 +24,7 @@ app.use(express.static(carpetaStatic));
 app.post("/rexistro", RexistroUser);
 app.post("/login", loginUser, mostrarPagina);
 app.post("/check", checkUser);
+app.post("/update", updateUsuario);
 app.get("/leerTodo", LeerUsers);
 app.get("/admin", mostrarPagina);
 app.get("/perfil");

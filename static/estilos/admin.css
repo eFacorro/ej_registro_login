@@ -75,10 +75,10 @@ form > img {
 .lista-usuarios{
     margin: 15px;
     display: flex;
-    gap: 30px;
+    gap: 25px;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 .lista-usuarios > form {

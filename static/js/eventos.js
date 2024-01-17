@@ -81,13 +81,25 @@ function eventoEditar(id){
 
 function eventoGuardar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Guardar']");
-  botonEditar.addEventListener("click", (e) => {
+  botonEditar.addEventListener("click", async (e) => {
     e.preventDefault();
+    let formularios = new FormData();
+    formularios.append("_id", id.slice(2))
+
     let form = document.querySelectorAll("#" + id + " > input");
     for (let input of form){
       input.disabled = true;
+      formularios.append(input.name, input.value);
     }
-    // guardar datos nuevos en base de datos
+    for(let [name, value] of formularios) {
+      console.log(`${name} = ${value}`); // key1 = value1, luego key2 = value2
+    }
+    
+    let formId = document.querySelector("#" + id);
+    console.log(formularios)
+    let response = await fetch("/update", {method: "POST", body: formularios});
+    let result = await response.json();
+    console.log("resposta de guardarUsuario: ", result);
   })
 }
 

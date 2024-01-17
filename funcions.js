@@ -2,7 +2,8 @@ const {
   insertarUsuario,
   comprobarLogin,
   comprobarUser,
-  leerTodo } = require("./funciones/funcMongo.js")
+  leerTodo,
+  actualizarUsuario } = require("./funciones/funcMongo.js")
 const path = require("path");
 const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
 const carpetaStatic = path.join(__dirname, "static\\");
@@ -39,6 +40,11 @@ const RexistroUser = (req, res) => {
 
 const loginUser = (req, res, next) => {
   comprobarLogin({user: req.body.user, pwd: req.body.pwd}, req, res, next)
+}
+
+const updateUsuario = (req, res) => {
+  console.log("funciones ", req.body);
+  actualizarUsuario(estructurarDatos(req.body));
 }
 
 const mostrarPagina = (req, res) => {
@@ -78,5 +84,6 @@ module.exports = {
   loginUser,
   checkUser,
   mostrarPagina,
-  LeerUsers
+  LeerUsers,
+  updateUsuario
 };
