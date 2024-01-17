@@ -1,5 +1,6 @@
 import {
-  cargarUsuario} from "./helpers.js";
+  cargarUsuario,
+  creoTarjeta } from "./helpers.js";
 
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
@@ -42,30 +43,43 @@ function loginUser(){
 function registroUser(){
   rexistrarUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
-    let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
-    let result = await response.json();
-    console.log("resposta de rexistrarUsuario: ", result);
+    let newUser = document.querySelector("#formRexistro > input[name='user']");
+    let checkUser = await funcCheckNuewUser(newUser);
+    console.log(checkUser);
+    if (checkUser){
+      let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
+      let result = await response.json();
+      console.log("resposta de rexistrarUsuario: ", result);
+    }
   });
 }
 
 function checkNewUser(){
-  let newUser = document.querySelector("#formRexistro > input[name='user']")
-  newUser.addEventListener("change", async (e) => {
+  let newUser = document.querySelector("#formRexistro > input[name='user']");
+  newUser.addEventListener("change", (e) => {
     e.preventDefault();
-    let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
-    let result = await response.json();
-    console.log("resposta de checkUser: ", result);
-
-    let ref = document.querySelector("#formRexistro > span");
-    ref.innerText = result.msg;
-    if (result.status == true){
-      ref.style.display = "block";
-      newUser.style.color = "red";
-    } else {
-      ref.style.display = "none";
-      newUser.style.color = "black";
-    }
+    funcCheckNuewUser(newUser);
   });
+}
+
+async function funcCheckNuewUser(newUser){
+  let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
+  let result = await response.json();
+  console.log("resposta de checkUser: ", result);
+
+  let ref = document.querySelector("#formRexistro > span");
+  ref.innerText = result.msg;
+  if (result.status){
+    ref.style.display = "block";
+    newUser.style.color = "red";
+    rexistrarUsuario.disabled = true;
+    return false
+  } else {
+    ref.style.display = "none";
+    newUser.style.color = "black";
+    rexistrarUsuario.disabled = false;
+    return true
+  }
 }
 
 function eventoEditar(id){
@@ -102,7 +116,7 @@ function eventoBorrar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Borrar']");
   botonEditar.addEventListener("click", async (e) => {
     e.preventDefault();
-    
+
     let form = document.querySelector("#" + id);
     form.remove()
 

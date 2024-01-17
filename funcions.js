@@ -9,19 +9,17 @@ const path = require("path");
 const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
 const carpetaStatic = path.join(__dirname, "static\\");
 
-const RexistroUser = (req, res) => {
+const RexistroUser = async (req, res) => {
   let sampleFile;
   let img = "default.png";
   let uploadPath;
+  let dato;
 
   const doc = estructurarDatos(req.body)
   
   if (!req.files || Object.keys(req.files).length === 0) {
     // return res.status(400).send("O ficheiro non foi actualizado.");
-    let dato = {
-      mensaxe: "Sin imagen personalizada"
-    }
-    res.status(200).send(dato);
+    dato.msg = "Sin imagen personalizada";
   }
   else {
     sampleFile = req.files.usuario;
@@ -29,14 +27,12 @@ const RexistroUser = (req, res) => {
     uploadPath = staticImg + img;
     sampleFile.mv(uploadPath, function (err) {
       if (err) return res.status(500).send(err);
-      let dato = {
-        mensaxe: "Imagen guardada"
-      }
-      res.status(200).send(dato);
+      dato.msg = "Imagen guardada";
     });
   }
   doc.img = img;
-  insertarUsuario(doc) //puede ser buena idea que la imgen se llame por la id
+  dato.user = await insertarUsuario(doc) //puede ser buena idea que la imgen se llame por la id
+  res.status(200).send(dato);
 };
 
 const loginUser = (req, res, next) => {

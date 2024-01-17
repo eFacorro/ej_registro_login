@@ -13,6 +13,9 @@ async function insertarUsuario(usuario) {
       const coll = db.collection(coleccion);
       const result = await coll.insertOne(usuario);
       console.log('en insertar datos: ',result);
+      let respuesta = usuario;
+      respuesta._id = result.insertedId;
+      return respuesta
   } finally {
     await client.close();
   }
