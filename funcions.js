@@ -53,12 +53,11 @@ const deleteUser = (req, res) => {
 }
 
 const mostrarPagina = (req, res) => {
-  // console.log(req.body);
-  // if (req.body.user === "admin"){
+  if (req.body.admin){
     res.sendFile("admin.html", { root: carpetaStatic });
-  // } else {
-  //   res.sendFile("perfil.html", { root: carpetaStatic });
-  // }
+  } else {
+    res.sendFile("perfil.html", { root: carpetaStatic });
+  }
   
 }
 

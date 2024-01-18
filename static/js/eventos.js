@@ -30,8 +30,9 @@ function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
-    let result = await response.json();
+    let result = await response.text();
     console.log("resposta de loginUsuario: ", result);
+    document.html.innerHTML = result
     if (result.status == false){
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
