@@ -31,12 +31,16 @@ function loginUser(){
     e.preventDefault();
     let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
     let result = await response.text();
-    console.log("resposta de loginUsuario: ", result);
-    document.html.innerHTML = result
-    if (result.status == false){
+    // console.log("resposta de loginUsuario: ", result);
+    
+    if (result.substring(0,1) === "{"){
+      result = JSON.parse(result);
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
       ref.style.display = "block";
+    } else{
+      // result = await response.text();
+      document.querySelector("html").innerHTML = result;
     }
   });
 }
