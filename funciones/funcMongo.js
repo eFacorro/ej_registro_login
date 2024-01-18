@@ -2,9 +2,9 @@ const {
   MongoClient,
   ObjectId} = require("mongodb")
 const url = process.env.URLMONGO;
-const database = process.env.DB;
+const database = process.env.BBDD;
+const coleccion = process.env.COLECCION;
 const client = new MongoClient(url);
-const coleccion = "usuarios";
 
 async function insertarUsuario(usuario) {
   try {
