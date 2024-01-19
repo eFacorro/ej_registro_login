@@ -61,10 +61,11 @@ function registroUser(){
     if (checkUser && checkPwd){
       let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
       let result = await response.json();
-      console.log("resposta de rexistrarUsuario: ", result);
-      if(e.srcElement.baseURI.includes("/admin")){
-        creoTarjeta(result.user);
-      }
+      console.log("resposta de rexistrarUsuario: ", response);
+      creoTarjeta(result.user);
+      // if(e.srcElement.baseURI.includes("/admin")){
+      //   creoTarjeta(result.user);
+      // }
       formRexistro.reset();
     }
   });

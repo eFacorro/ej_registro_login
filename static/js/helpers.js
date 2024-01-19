@@ -106,6 +106,66 @@ function creoTarjeta(usuario){
   eventoBorrar(id);
 }
 
+function creoTarjetaPublica(usuario){
+  let id = "id" + usuario._id.toString()
+  let ref = document.querySelector(".lista-usuarios");
+  let form = document.createElement("form");
+  form.setAttribute("id", id)
+  ref.appendChild(form);
+
+  let img = document.createElement("img");
+  img.setAttribute("src", "./imgs/" + usuario.img)
+  form.appendChild(img);
+  
+  let user = document.createElement("input");
+  user.setAttribute("name", "user");
+  user.setAttribute("type", "text");
+  user.setAttribute("placeholder", "Usuario");
+  user.disabled = "true";
+  user.value = usuario.user;
+  form.appendChild(user);
+
+
+  let nombre = document.createElement("input");
+  nombre.setAttribute("name", "nombre");
+  nombre.setAttribute("type", "text");
+  nombre.setAttribute("placeholder", "Nombre");
+  nombre.disabled = "true";
+  if(usuario.nombre != undefined){
+    nombre.value = usuario.nombre;
+    form.appendChild(nombre);
+  }
+  
+  let primerApellido = document.createElement("input");
+  primerApellido.setAttribute("name", "primerApellido");
+  primerApellido.setAttribute("type", "text");
+  primerApellido.setAttribute("placeholder", "Primer Apellido");
+  primerApellido.disabled = "true";
+  if(usuario.primerApellido != undefined){
+    primerApellido.value = usuario.primerApellido;
+    form.appendChild(primerApellido);
+  }
+
+  let segundoApellido = document.createElement("input");
+  segundoApellido.setAttribute("name", "segundoApellido");
+  segundoApellido.setAttribute("type", "text");
+  segundoApellido.setAttribute("placeholder", "Segundo Apellido");
+  segundoApellido.disabled = "true";
+  if(usuario.segundoApellido != undefined){
+    segundoApellido.value = usuario.segundoApellido;
+    form.appendChild(segundoApellido);
+  }
+
+  let fechaNacimiento = document.createElement("input");
+  fechaNacimiento.setAttribute("name", "fechaNacimiento");
+  fechaNacimiento.setAttribute("type", "date");
+  fechaNacimiento.disabled = "true";
+  if(usuario.fechaNacimiento != undefined){
+    fechaNacimiento.value = usuario.fechaNacimiento;
+    form.appendChild(fechaNacimiento);
+  }
+}
+
 async function cargarUsuario(){
   let datos = {
     endpoint: '/leerTodo'

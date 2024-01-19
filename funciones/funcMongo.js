@@ -55,14 +55,14 @@ async function comprobarUser(usuario, res){
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
-    const busqueda = {user: usuario.user}
+    const busqueda = {user: usuario.user};
     const result = coll.find(busqueda);//(usuario);
 
     for await(const key of result){
       if (key.user === usuario.user){
         console.log("ya existe");
-        res.send({status: true, msg: "El usuario ya existe"});
-        return
+        //res.send({status: true, msg: "El usuario ya existe"});
+        return key
       }
     }
     

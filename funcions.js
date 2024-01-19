@@ -83,6 +83,25 @@ const LeerUsers = async (req,res) => {
   res.send(result)
 }
 
+const checkPerfil = async (req, res) => {
+  console.log(req.params.id);
+  const fs = require('node:fs/promises');
+  const perfil = await comprobarUser({user: req.params.id}, res);
+  if (perfil != undefined){
+    let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
+    //location.replace()
+    
+    userFile.replace(`USER`, perfil.user);
+    console.log(perfil,userFile);
+    res.send(userFile);
+  }
+  console.log(perfil);
+}
+
+function checkPerfil2(){
+  console.log(2)
+}
+ 
 module.exports = {
   RexistroUser,
   loginUser,
@@ -90,5 +109,7 @@ module.exports = {
   mostrarPagina,
   LeerUsers,
   updateUser,
-  deleteUser
+  deleteUser,
+  checkPerfil,
+  checkPerfil2
 };
