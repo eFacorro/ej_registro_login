@@ -44,7 +44,6 @@ const loginUser = (req, res, next) => {
 }
 
 const updateUser = (req, res) => {
-  console.log("funciones ", req.body);
   actualizarUsuario(estructurarDatos(req.body));
 }
 
@@ -56,10 +55,10 @@ const mostrarPagina = async (req, res) => {
   const fs = require('node:fs/promises');
   if (req.body.admin){
     const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
-    res.send({status: true, msg: "Admin", html: userFile, user: req.body});
+    res.send({status: true, html: userFile, user: req.body, msg: "Admin"});
   } else {
     const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
-    res.send({status: true, msg: "Usuario contraseña incorrectos", html: userFile, user: req.body});
+    res.send({status: true, html: userFile, user: req.body, msg: "Usuario contraseña incorrectos"});
   } 
 }
 
@@ -73,7 +72,6 @@ function estructurarDatos(datos){
       delete datos[key];
     }
   }
-  // console.log(datos);
   return datos;
 }
 

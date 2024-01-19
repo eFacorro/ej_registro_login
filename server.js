@@ -28,8 +28,6 @@ app.post("/check", checkUser);
 app.post("/update", updateUser);
 app.post("/delete", deleteUser);
 app.get("/leerTodo", LeerUsers);
-// app.get("/admin", mostrarPagina);
-// app.get("/perfil");
 
 app.listen(3000, function () {
   console.log("Server running");

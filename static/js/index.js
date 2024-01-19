@@ -8,7 +8,6 @@ import {
 
 formRexistro.style.display = "none";
 registroSpan.style.opacity = 0.5;
-// formLogin.style.display = "none";
 
 botonLogin();
 botonRegistro();

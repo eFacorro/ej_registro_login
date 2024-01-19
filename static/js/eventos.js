@@ -29,7 +29,7 @@ function loginUser(){
     e.preventDefault();
     let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
     let result = await response.json();
-    console.log("resposta de loginUsuario: ", response);
+    // console.log("resposta de loginUsuario: ", response);
     
     if (result.status){
       if(result.user.admin){
@@ -89,7 +89,7 @@ async function funcCheckNuewUser(newUser){
   } else {
     let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
     result = await response.json();
-    console.log("resposta de checkUser: ", result);
+    // console.log("resposta de checkUser: ", result);
   }
   ref.innerText = result.msg;
   if (result.status){
@@ -153,7 +153,7 @@ function eventoGuardar(id){
     
     let response = await fetch("/update", {method: "POST", body: formulario});
     let result = await response.json();
-    console.log("resposta de guardarUsuario: ", result);
+    // console.log("resposta de guardarUsuario: ", result);
   })
 }
 
