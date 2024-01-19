@@ -31,20 +31,19 @@ async function comprobarLogin(usuario, req, res, next) {
 
     for await(const key of result){
       if (key.user === usuario.user && key.pwd === usuario.pwd){
+        req.body = key;
         if (key.admin === true){
-          req.body.admin = key.admin;
           next();
           return
         }
-        console.log("usuario y contraseña correctos");
-        res.status(401).send({status: true, msg: "Usuario y contraseña correctos"});
-        // next();
-        return
       }
+      console.log("Usuario y contraseña correctos");
+      next();
+      return
     }
     
     console.log("usuario y/o contraseña incorrectos");
-    res.send({status: false, msg: "Usuario y/o contraseña incorrectos"});
+    res.status(401).send({status: false, msg: "Usuario y/o contraseña incorrectos"});
   
   } finally {
     await client.close();

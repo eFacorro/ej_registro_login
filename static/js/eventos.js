@@ -5,7 +5,6 @@ import {
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("registro")
     formRexistro.style.display = "flex";
     registroSpan.style.opacity = 1;
     formLogin.style.display = "none";
@@ -17,7 +16,6 @@ function botonRegistro(){
 function botonLogin(){
   loginSpan.addEventListener("click", (e) => {
     e.preventDefault();
-    console.log("login")
     formRexistro.style.display = "none";
     registroSpan.style.opacity = 0.5;
     formLogin.style.display = "flex";
@@ -30,17 +28,25 @@ function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
-    let result = await response.text();
-    // console.log("resposta de loginUsuario: ", result);
+    let result = await response.json();
+    console.log("resposta de loginUsuario: ", response);
     
-    if (result.substring(0,1) === "{"){
-      result = JSON.parse(result);
+    if (result.status){
+      if(result.user.admin){
+        document.querySelector("html").innerHTML = result.html;
+        cargarUsuario();
+        registroUser();
+        checkNewUser();
+        eventoRecargar();
+        checkPass();
+      } else {
+        document.querySelector("html").innerHTML = result.html;
+        creoTarjeta(result.user);
+      }
+    } else{
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
       ref.style.display = "block";
-    } else{
-      // result = await response.text();
-      document.querySelector("html").innerHTML = result;
     }
   });
 }

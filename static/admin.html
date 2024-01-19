@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="estilos/admin.css" rel="stylesheet">
-    <script async type="module" src="./js/admin.js"></script>
+    <!-- <script async type="module" src="./js/admin.js"></script> -->
     <title>Pagina de Admin</title>
   </head>
   <body>
     <header>
       <nav>
         <a id="recargar" href="#">Recargar</a>
-        <a href="./salir">Salir</a>
+        <a href="./">Salir</a>
       </nav>
     </header>
     <div>
@@ -40,5 +40,14 @@
         </section>
       </main>
     </div>
+    <script>
+
+      function ready() {
+        console.log("está dende o propio html")
+      }
+      console.log("???????")
+      document.addEventListener("DOMContentLoaded", ready);
+      alert("Libreria cargada, linea de script ejecutada");
+    </script>
   </body>
 </html>

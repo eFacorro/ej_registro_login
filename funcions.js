@@ -52,11 +52,14 @@ const deleteUser = (req, res) => {
   borrarUsuario(req.body._id)
 }
 
-const mostrarPagina = (req, res) => {
+const mostrarPagina = async (req, res) => {
+  const fs = require('node:fs/promises');
   if (req.body.admin){
-    res.status(200).sendFile("admin.html", { root: carpetaStatic });
+    const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
+    res.send({status: true, msg: "Admin", html: userFile, user: req.body});
   } else {
-    res.status(200).sendFile("perfil.html", { root: carpetaStatic });
+    const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
+    res.send({status: true, msg: "Usuario contraseña incorrectos", html: userFile, user: req.body});
   } 
 }
 
