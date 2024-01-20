@@ -84,7 +84,7 @@ const LeerUsers = async (req,res) => {
 }
 
 const checkPerfil = async (req, res) => {
-  console.log(req.params.id);
+  // console.log(req.params.id);
   const fs = require('node:fs/promises');
   const perfil = await comprobarUser({user: req.params.id}, res);
   if (perfil != undefined){
@@ -93,6 +93,9 @@ const checkPerfil = async (req, res) => {
     // userFile = userFile.replace("USER", perfil.user);
     userFile = userFile.replace("USER", JSON.stringify(perfil));
     res.send(userFile);
+  } else {
+    console.log("El usuario no existe");
+    res.send("El usuario no existe");
   }
 }
  

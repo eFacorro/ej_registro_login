@@ -61,13 +61,11 @@ async function comprobarUser(usuario, res){
     for await(const key of result){
       if (key.user === usuario.user){
         console.log("ya existe");
-        //res.send({status: true, msg: "El usuario ya existe"});
+        // res.send({status: true, msg: "El usuario ya existe"});
         return key
       }
     }
-    
-    res.send({status: false, msg: "El usuario es nuevo"});
-  
+    // res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
   } finally {
     await client.close();
   }
