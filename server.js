@@ -7,8 +7,7 @@ const {
   LeerUsers,
   updateUser,
   deleteUser,
-  checkPerfil,
-  checkPerfil2 } = require("./funcions.js");
+  checkPerfil } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -31,7 +30,6 @@ app.post("/update", updateUser);
 app.post("/delete", deleteUser);
 app.get("/leerTodo", LeerUsers);
 app.get("/:id", checkPerfil);
-app.post("/:id", checkPerfil2);
 
 app.listen(3000, function () {
   console.log("Server running");

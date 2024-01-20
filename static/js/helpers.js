@@ -178,5 +178,6 @@ async function cargarUsuario(){
 
 export {
   cargarUsuario,
-  creoTarjeta
+  creoTarjeta,
+  creoTarjetaPublica
 }

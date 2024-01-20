@@ -88,18 +88,12 @@ const checkPerfil = async (req, res) => {
   const fs = require('node:fs/promises');
   const perfil = await comprobarUser({user: req.params.id}, res);
   if (perfil != undefined){
+    delete perfil.pwd
     let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
-    //location.replace()
-    
-    userFile.replace(`USER`, perfil.user);
-    console.log(perfil,userFile);
+    // userFile = userFile.replace("USER", perfil.user);
+    userFile = userFile.replace("USER", JSON.stringify(perfil));
     res.send(userFile);
   }
-  console.log(perfil);
-}
-
-function checkPerfil2(){
-  console.log(2)
 }
  
 module.exports = {
@@ -110,6 +104,5 @@ module.exports = {
   LeerUsers,
   updateUser,
   deleteUser,
-  checkPerfil,
-  checkPerfil2
+  checkPerfil
 };
