@@ -30,10 +30,6 @@ function loginUser(){
     let token = localStorage.getItem('token');
     let response = await fetch("/login", {method: "POST",body: new FormData(formLogin), headers: {"authorization": token} });
     let result = await response.json();
-    // console.log("resposta de loginUsuario: ", response);
-    // response = await fetch("/auth", {method: "POST",body: result.user });
-    // token = await response.json();
-    // console.log("token", token);
     console.log(result)
     localStorage.setItem('token', result.token);
 
@@ -49,7 +45,7 @@ function loginUser(){
         document.querySelector("html").innerHTML = result.html;
         creoTarjeta(result.user);
       }
-      // location.replace("./" + result.user.user)
+      location.replace("./" + result.user.user)
     } else{
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
@@ -69,12 +65,13 @@ function registroUser(){
       let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
       let result = await response.json();
       console.log("resposta de rexistrarUsuario: ", result);
+      localStorage.setItem('token', result.token);
       formRexistro.reset();
       if(rexistrarUsuario.value === "admin"){
         creoTarjeta(result.user);
       }
       else {
-        // location.replace("./" + result.user.user)  // insertar pagina despues de logearse
+        location.replace("./" + result.user.user)  // insertar pagina despues de logearse
       }
     }
   });

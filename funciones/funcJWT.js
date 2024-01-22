@@ -7,9 +7,6 @@ const crearToken = (req, res, next)=>{
   req.token = token;
   next();
   
-  // res.send({
-  //   token: token
-  // })
 }
 
 const comprobarToken = (req,res,next)=>{

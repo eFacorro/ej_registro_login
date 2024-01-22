@@ -14,4 +14,4 @@ botonRegistro();
 registroUser();
 loginUser();
 checkNewUser();
-checkPass(); 
+checkPass();

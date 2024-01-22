@@ -40,6 +40,7 @@ const RexistroUser = async (req, res) => {
   }
   doc.img = img;
   dato.user = await insertarUsuario(doc) //puede ser buena idea que la imgen se llame por la id
+  dato.token = req.token;
   res.status(200).send(dato);
 };
 
@@ -113,8 +114,18 @@ const enviarToken = (req, res, next) => {
   crearToken(req, res, next)
 }
 
-const recibirToken = (req, res, next) => {
-  comprobarToken(req,res,next);
+const recibirToken = async (req, res) => {
+  console.log("recibirToken", req.params);
+  if(req.headers.authorization != "null"){
+    let tokenInfo = comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
+    console.log("tokenInfo", tokenInfo);
+    if (req.params.user == tokenInfo){
+      console.log("tokenInfo", tokenInfo);
+      const perfil = await comprobarUser({user: tokenInfo}, res, false);
+      req.body = perfil;
+      mostrarPagina(req, res);
+    }
+  }
 }
  
 module.exports = {

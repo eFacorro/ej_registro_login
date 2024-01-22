@@ -14,6 +14,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
+const { comprobarToken } = require('./funciones/funcJWT.js');
 
 const app = express();
 app.use(express.json());
@@ -25,12 +26,12 @@ const carpetaStatic = path.join(__dirname, "static");
 
 app.use(express.static(carpetaStatic));
 
-app.post("/rexistro", RexistroUser);
+app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
-// app.post("/auth", enviarToken)
 app.post("/check", checkUser);
 app.post("/update", updateUser);
 app.post("/delete", deleteUser);
+app.post("/:user", recibirToken);
 app.get("/leerTodo", LeerUsers);
 app.get("/:user", checkPerfil);
 
