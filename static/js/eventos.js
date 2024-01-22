@@ -27,10 +27,16 @@ function botonLogin(){
 function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
-    let response = await fetch("/login", {method: "POST",body: new FormData(formLogin) });
+    let token = localStorage.getItem('token');
+    let response = await fetch("/login", {method: "POST",body: new FormData(formLogin), headers: {"authorization": token} });
     let result = await response.json();
     // console.log("resposta de loginUsuario: ", response);
-    
+    // response = await fetch("/auth", {method: "POST",body: result.user });
+    // token = await response.json();
+    // console.log("token", token);
+    console.log(result)
+    localStorage.setItem('token', result.token);
+
     if (result.status){
       if(result.user.admin){
         document.querySelector("html").innerHTML = result.html;
@@ -64,7 +70,7 @@ function registroUser(){
       let result = await response.json();
       console.log("resposta de rexistrarUsuario: ", result);
       formRexistro.reset();
-      if(rexistrarUsuario.value === "admin"){ // buscar un sistema mejor
+      if(rexistrarUsuario.value === "admin"){
         creoTarjeta(result.user);
       }
       else {

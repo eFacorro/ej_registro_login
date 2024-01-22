@@ -1,10 +1,14 @@
+
 const {
   insertarUsuario,
   comprobarLogin,
   comprobarUser,
   leerTodo,
   actualizarUsuario,
-  borrarUsuario } = require("./funciones/funcMongo.js")
+  borrarUsuario } = require("./funciones/funcMongo.js");
+  const {
+    crearToken,
+    comprobarToken } = require("./funciones/funcJWT.js")
 const path = require("path");
 const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
 const carpetaStatic = path.join(__dirname, "static\\");
@@ -40,7 +44,11 @@ const RexistroUser = async (req, res) => {
 };
 
 const loginUser = (req, res, next) => {
-  comprobarLogin({user: req.body.user, pwd: req.body.pwd}, req, res, next)
+  console.log("loginUser ",req.headers.authorization)
+  if(req.headers.authorization != "null"){
+    console.log(comprobarToken(req, res));/// devuelte nombre de usuario o undefined si no coincide
+  }
+  comprobarLogin(req, res, next)
 }
 
 const updateUser = (req, res) => {
@@ -55,10 +63,10 @@ const mostrarPagina = async (req, res) => {
   const fs = require('node:fs/promises');
   if (req.body.admin){
     const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
-    res.send({status: true, html: userFile, user: req.body, msg: "Admin"});
+    res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Admin"});
   } else {
     const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
-    res.send({status: true, html: userFile, user: req.body, msg: "Usuario contraseña incorrectos"});
+    res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Usuario contraseña incorrectos"});
   } 
 }
 
@@ -92,12 +100,21 @@ const checkPerfil = async (req, res) => {
       let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
       // userFile = userFile.replace("USER", perfil.user);
       userFile = userFile.replace("USER", JSON.stringify(perfil));
+      userFile = userFile.replace("Buscador", perfil.user);
       res.send(userFile);
     } else {
       console.log("El usuario no existe");
       res.send("El usuario no existe");
     }
   }
+}
+
+const enviarToken = (req, res, next) => {
+  crearToken(req, res, next)
+}
+
+const recibirToken = (req, res, next) => {
+  comprobarToken(req,res,next);
 }
  
 module.exports = {
@@ -108,5 +125,7 @@ module.exports = {
   LeerUsers,
   updateUser,
   deleteUser,
-  checkPerfil
+  checkPerfil,
+  enviarToken,
+  recibirToken
 };

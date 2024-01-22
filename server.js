@@ -7,7 +7,9 @@ const {
   LeerUsers,
   updateUser,
   deleteUser,
-  checkPerfil } = require("./funcions.js");
+  checkPerfil,
+  recibirToken,
+  enviarToken } = require("./funcions.js");
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -24,7 +26,8 @@ const carpetaStatic = path.join(__dirname, "static");
 app.use(express.static(carpetaStatic));
 
 app.post("/rexistro", RexistroUser);
-app.post("/login", loginUser, mostrarPagina);
+app.post("/login", loginUser, enviarToken, mostrarPagina);
+// app.post("/auth", enviarToken)
 app.post("/check", checkUser);
 app.post("/update", updateUser);
 app.post("/delete", deleteUser);

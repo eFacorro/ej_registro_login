@@ -21,16 +21,16 @@ async function insertarUsuario(usuario) {
   }
 }
 
-async function comprobarLogin(usuario, req, res, next) {
+async function comprobarLogin(req, res, next) {
   try {
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
     
-    const result = coll.find(usuario);//(usuario);
+    const result = coll.find(req.body);//(usuario);
 
     for await(const key of result){
-      if (key.user === usuario.user && key.pwd === usuario.pwd){
+      if (key.user === req.body.user && key.pwd === req.body.pwd){
         req.body = key;
         if (key.admin === true){
           next();
