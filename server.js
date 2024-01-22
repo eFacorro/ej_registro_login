@@ -29,7 +29,7 @@ app.post("/check", checkUser);
 app.post("/update", updateUser);
 app.post("/delete", deleteUser);
 app.get("/leerTodo", LeerUsers);
-app.get("/:id", checkPerfil);
+app.get("/:user", checkPerfil);
 
 app.listen(3000, function () {
   console.log("Server running");

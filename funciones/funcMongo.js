@@ -50,7 +50,7 @@ async function comprobarLogin(usuario, req, res, next) {
   }
 }
 
-async function comprobarUser(usuario, res){
+async function comprobarUser(usuario, res, check){
   try {
     await client.connect();
     const db = client.db(database);
@@ -61,12 +61,16 @@ async function comprobarUser(usuario, res){
     for await(const key of result){
       if (key.user === usuario.user){
         console.log("ya existe");
-        // res.send({status: true, msg: "El usuario ya existe"});
-        return key
+        if(check){
+          res.send({status: true, msg: "El usuario ya existe"});
+          return
+        } else {
+          return key 
+        }
       }
     }
-    // res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
-  } finally {
+    res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
+  } finally { 
     await client.close();
   }
 }
@@ -110,7 +114,7 @@ async function actualizarUsuario(datos) {
     await client.close();
   }
 }
-
+ 
 async function borrarUsuario(id) {
   try {
     console.log('Estou en BorrarUsuario: ',id)

@@ -43,6 +43,7 @@ function loginUser(){
         document.querySelector("html").innerHTML = result.html;
         creoTarjeta(result.user);
       }
+      // location.replace("./" + result.user.user)
     } else{
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
@@ -61,12 +62,14 @@ function registroUser(){
     if (checkUser && checkPwd){
       let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
       let result = await response.json();
-      console.log("resposta de rexistrarUsuario: ", response);
-      creoTarjeta(result.user);
-      // if(e.srcElement.baseURI.includes("/admin")){
-      //   creoTarjeta(result.user);
-      // }
+      console.log("resposta de rexistrarUsuario: ", result);
       formRexistro.reset();
+      if(rexistrarUsuario.value === "admin"){ // buscar un sistema mejor
+        creoTarjeta(result.user);
+      }
+      else {
+        // location.replace("./" + result.user.user)  // insertar pagina despues de logearse
+      }
     }
   });
 }

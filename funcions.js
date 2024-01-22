@@ -63,7 +63,7 @@ const mostrarPagina = async (req, res) => {
 }
 
 const checkUser = (req, res) => {
-  comprobarUser({user: req.body.user}, res);
+  comprobarUser({user: req.body.user}, res, true);
 }
 
 function estructurarDatos(datos){
@@ -84,18 +84,19 @@ const LeerUsers = async (req,res) => {
 }
 
 const checkPerfil = async (req, res) => {
-  // console.log(req.params.id);
-  const fs = require('node:fs/promises');
-  const perfil = await comprobarUser({user: req.params.id}, res);
-  if (perfil != undefined){
-    delete perfil.pwd
-    let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
-    // userFile = userFile.replace("USER", perfil.user);
-    userFile = userFile.replace("USER", JSON.stringify(perfil));
-    res.send(userFile);
-  } else {
-    console.log("El usuario no existe");
-    res.send("El usuario no existe");
+  if(req.params.user != "favicon.ico"){
+    const fs = require('node:fs/promises');
+    const perfil = await comprobarUser({user: req.params.user}, res, false);
+    if (perfil != undefined){
+      delete perfil.pwd
+      let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
+      // userFile = userFile.replace("USER", perfil.user);
+      userFile = userFile.replace("USER", JSON.stringify(perfil));
+      res.send(userFile);
+    } else {
+      console.log("El usuario no existe");
+      res.send("El usuario no existe");
+    }
   }
 }
  

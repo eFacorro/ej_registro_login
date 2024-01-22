@@ -125,7 +125,6 @@ function creoTarjetaPublica(usuario){
   user.value = usuario.user;
   form.appendChild(user);
 
-
   let nombre = document.createElement("input");
   nombre.setAttribute("name", "nombre");
   nombre.setAttribute("type", "text");
