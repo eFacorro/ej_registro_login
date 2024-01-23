@@ -62,15 +62,15 @@ function registroUser(){
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
     let checkPwd = await funcCheckPass(pass);
     if (checkUser && checkPwd){
-      let response = await fetch("/rexistro", {method: "POST",body: new FormData(formRexistro) });
+      let response = await fetch("/rexistro", {method: "POST", body: new FormData(formRexistro)});
       let result = await response.json();
       console.log("resposta de rexistrarUsuario: ", result);
-      localStorage.setItem('token', result.token);
       formRexistro.reset();
       if(rexistrarUsuario.value === "admin"){
         creoTarjeta(result.user);
       }
       else {
+        localStorage.setItem('token', result.token);
         location.replace("./" + result.user.user)  // insertar pagina despues de logearse
       }
     }
@@ -94,7 +94,7 @@ async function funcCheckNuewUser(newUser){
     rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto el boton no funciona bien
     return false
   } else {
-    let response = await fetch("/check", {method: "POST",body: new FormData(formRexistro) });
+    let response = await fetch("/check", {method: "POST", body: new FormData(formRexistro) });
     result = await response.json();
     // console.log("resposta de checkUser: ", result);
   }
@@ -136,29 +136,59 @@ function funcCheckPass(pass){
 
 function eventoEditar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Editar']");
+  let editoImg = document.querySelector("#" + id + " > img");
+  let file = document.querySelector("#" + id + "img");
+
   botonEditar.addEventListener("click", (e) => {
     e.preventDefault();
     let form = document.querySelectorAll("#" + id + " > input");
+    editoImg.style.cursor = "pointer";
+    editoImg.setAttribute("value", "edito");
     for (let input of form){
       input.disabled = false;
     }
-  })
+  });
+
+  editoImg.addEventListener("click", async (e) => {
+    e.preventDefault();
+    if(editoImg.getAttribute("value") == "edito"){
+      file.click();
+    }
+  });
+
+  file.addEventListener("change", (e) => {
+    e.preventDefault();
+    let imgFile = e.target.files[0];
+    let datosImg = URL.createObjectURL(imgFile);
+    console.log(datosImg)
+    editoImg.setAttribute("src", datosImg);
+  });
 }
 
 function eventoGuardar(id){
   let botonEditar = document.querySelector("#" + id + " > div > input[value='Guardar']");
+  let editoImg = document.querySelector("#" + id + " > img");
   botonEditar.addEventListener("click", async (e) => {
     e.preventDefault();
     let formulario = new FormData();
     formulario.append("_id", id.slice(2));
-
+    editoImg.style.cursor = "auto"; 
+    editoImg.removeAttribute("value");
     let form = document.querySelectorAll("#" + id + " > input");
+    let img = document.querySelector("#" + id + " > img");
     for (let input of form){
       input.disabled = true;
-      formulario.append(input.name, input.value);
+      if(input.name == "usuario"){
+        console.log(input.name, input.files[0]);
+        formulario.append(input.name, input.files[0]);
+        // formulario.append(input.name, img.src);
+      } else{
+        console.log(input.name, input.value);
+        formulario.append(input.name, input.value);
+      }
     }
     
-    let response = await fetch("/update", {method: "POST", body: formulario});
+    let response = await fetch("/update", {method: "POST", body: formulario, files: img.src});
     let result = await response.json();
     // console.log("resposta de guardarUsuario: ", result);
   })

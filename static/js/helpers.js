@@ -19,7 +19,13 @@ function creoTarjeta(usuario){
   let id = "id" + usuario._id.toString()
   let ref = document.querySelector(".lista-usuarios");
   let form = document.createElement("form");
-  form.setAttribute("id", id)
+  form.setAttribute("id", id);
+
+  let file = document.createElement("input");
+  file.setAttribute("name", "usuario");
+  file.setAttribute("type", "file");
+  file.setAttribute("hidden", true);
+  file.setAttribute("id", id + "img");
 
   let img = document.createElement("img");
   img.setAttribute("src", "./imgs/" + usuario.img)
@@ -74,6 +80,7 @@ function creoTarjeta(usuario){
   }
 
   ref.appendChild(form)
+  form.appendChild(file);
   form.appendChild(img);
   form.appendChild(user);
   form.appendChild(pwd);

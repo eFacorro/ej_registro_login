@@ -1,4 +1,3 @@
-
 const {
   insertarUsuario,
   comprobarLogin,
@@ -6,9 +5,13 @@ const {
   leerTodo,
   actualizarUsuario,
   borrarUsuario } = require("./funciones/funcMongo.js");
-  const {
-    crearToken,
-    comprobarToken } = require("./funciones/funcJWT.js")
+
+const {
+  crearToken,
+  comprobarToken } = require("./funciones/funcJWT.js");
+
+const fs = require('fs');
+
 const path = require("path");
 const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
 const carpetaStatic = path.join(__dirname, "static\\");
@@ -16,10 +19,10 @@ const carpetaStatic = path.join(__dirname, "static\\");
 const RexistroUser = async (req, res) => {
   let sampleFile;
   let img = "default.png";
-  let uploadPath;
+  let uploadPath; 
   let dato;
 
-  const doc = estructurarDatos(req.body)
+  const doc = estructurarDatos(req.body);
   
   if (!req.files || Object.keys(req.files).length === 0) {
     // return res.status(400).send("O ficheiro non foi actualizado.");
@@ -39,10 +42,24 @@ const RexistroUser = async (req, res) => {
     });
   }
   doc.img = img;
-  dato.user = await insertarUsuario(doc) //puede ser buena idea que la imgen se llame por la id
-  dato.token = req.token;
+  let user = await insertarUsuario(doc);
+  // dato.user = await insertarUsuario(doc); //puede ser buena idea que la imgen se llame por la id
+  dato.user = user;
+  dato.token = req.token;    // si hay que añadir el token a la bbdd hay que modificar esto
   res.status(200).send(dato);
 };
+
+function borrarImg(req){
+  if (req.body.img!= "default.png"){
+    let imgPath = staticImg + req.body.img;
+    fs.unlink(imgPath, (err) => {
+      if (err) {
+        throw err;
+      }
+      console.log(`imgen ${req.body.img} borrada`);
+    });
+  }
+}
 
 const loginUser = (req, res, next) => {
   console.log("loginUser ",req.headers.authorization)
@@ -52,12 +69,35 @@ const loginUser = (req, res, next) => {
   comprobarLogin(req, res, next)
 }
 
-const updateUser = (req, res) => {
-  actualizarUsuario(estructurarDatos(req.body));
+const updateUser = (req, res, next) => {
+  let sampleFile;
+  let img = "default.png";
+  let uploadPath; 
+  let dato;
+  
+  if (!req.files || Object.keys(req.files).length === 0) {
+    // return res.status(400).send("O ficheiro non foi actualizado.");
+    dato = {
+      msg : "Sin imagen personalizada"
+    }
+  }
+  else {
+    sampleFile = req.files.usuario;
+    img = req.body.user + req.files.usuario.name.slice(req.files.usuario.name.indexOf("."));
+    uploadPath = staticImg + img;
+    sampleFile.mv(uploadPath, function (err) {
+      if (err) return res.status(500).send(err);
+      dato = {
+        msg : "Imagen guardada"
+      }
+    });
+  }
+  req.body.img = img;
+  actualizarUsuario(req, res, next, estructurarDatos(req.body));
 }
 
-const deleteUser = (req, res) => {
-  borrarUsuario(req.body._id)
+const deleteUser = (req, res, next) => {
+  borrarUsuario(req, res, next, req.body._id)
 }
 
 const mostrarPagina = async (req, res) => {
@@ -111,7 +151,7 @@ const checkPerfil = async (req, res) => {
 }
 
 const enviarToken = (req, res, next) => {
-  crearToken(req, res, next)
+  crearToken(req, res, next);
 }
 
 const recibirToken = async (req, res) => {
@@ -138,5 +178,6 @@ module.exports = {
   deleteUser,
   checkPerfil,
   enviarToken,
-  recibirToken
+  recibirToken,
+  borrarImg
 };

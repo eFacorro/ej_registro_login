@@ -2,11 +2,10 @@ let jwt = require('jsonwebtoken');
 
 const crearToken = (req, res, next)=>{
   let datos = {user: req.body.user, pwd: req.body.pwd};
+  console.log(req.headers.referer);
   let token = jwt.sign({ dato: datos }, process.env.SECRETO);
-
   req.token = token;
   next();
-  
 }
 
 const comprobarToken = (req,res,next)=>{
