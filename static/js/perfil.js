@@ -7,7 +7,8 @@ import {
   registroUser,
   checkNewUser,
   eventoRecargar, 
-  checkPass } from "./eventos.js";
+  checkPass,
+  salir } from "./eventos.js";
 
 let datos = document.querySelector(".lista-usuarios");
 let usuario = JSON.parse(datos.innerText);
@@ -30,6 +31,7 @@ if (result.status){
     document.querySelector("html").innerHTML = result.html;
     creoTarjeta(result.user);
   }
+  salir();
 } else{
   let ref = document.querySelector("#formLogin > span");
   ref.innerText = result.msg;

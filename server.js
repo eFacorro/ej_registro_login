@@ -10,7 +10,9 @@ const {
   checkPerfil,
   recibirToken,
   enviarToken,
-  borrarImg } = require("./funcions.js");
+  borrarImg,
+  checkToken } = require("./funcions.js");
+  
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -31,6 +33,7 @@ app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);
 app.post("/update", updateUser, borrarImg);
 app.post("/delete", deleteUser, borrarImg);
+app.post("/checkToken", checkToken);
 app.get("/leerTodo", LeerUsers);
 app.get("/:user", checkPerfil);
 app.post("/:user", recibirToken);

@@ -45,7 +45,7 @@ function loginUser(){
         document.querySelector("html").innerHTML = result.html;
         creoTarjeta(result.user);
       }
-      location.replace("./" + result.user.user)
+      location.replace("./" + result.user.user);
     } else{
       let ref = document.querySelector("#formLogin > span");
       ref.innerText = result.msg;
@@ -195,18 +195,17 @@ function eventoGuardar(id){
 }
 
 function eventoBorrar(id){
-  let botonEditar = document.querySelector("#" + id + " > div > input[value='Borrar']");
-  botonEditar.addEventListener("click", async (e) => {
+  let botonBorrar = document.querySelector("#" + id + " > div > input[value='Borrar']");
+  botonBorrar.addEventListener("click", async (e) => {
     e.preventDefault();
-
-    let form = document.querySelector("#" + id);
-    form.remove()
-
     let formulario = new FormData();
     formulario.append("_id", id.slice(2));
     let response = await fetch("/delete", {method: "POST", body: formulario});
     let result = await response.json();
     console.log("resposta de borrarUsuario: ", result);
+
+    let form = document.querySelector("#" + id);
+    form.remove();
   })
 }
 
@@ -222,6 +221,14 @@ function eventoRecargar(){
   })
 }
 
+function salir(){
+  loginOut.addEventListener("click", (e) => {
+    e.preventDefault();
+    localStorage.removeItem("token");
+    location.replace("./");
+  })
+}
+
 export {
   botonRegistro,
   botonLogin,
@@ -232,5 +239,6 @@ export {
   eventoGuardar,
   eventoBorrar,
   eventoRecargar,
-  checkPass
+  checkPass,
+  salir
 }

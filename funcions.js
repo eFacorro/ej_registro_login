@@ -49,7 +49,7 @@ const RexistroUser = async (req, res) => {
   res.status(200).send(dato);
 };
 
-function borrarImg(req){
+function borrarImg(req, res){
   if (req.body.img!= "default.png"){
     let imgPath = staticImg + req.body.img;
     fs.unlink(imgPath, (err) => {
@@ -59,6 +59,7 @@ function borrarImg(req){
       console.log(`imgen ${req.body.img} borrada`);
     });
   }
+  res.send({msg: "hecho"})
 }
 
 const loginUser = (req, res, next) => {
@@ -160,11 +161,21 @@ const recibirToken = async (req, res) => {
     let tokenInfo = comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
     console.log("tokenInfo", tokenInfo);
     if (req.params.user == tokenInfo){
-      console.log("tokenInfo", tokenInfo);
+      console.log("tokenInfo recibirToken", tokenInfo);
       const perfil = await comprobarUser({user: tokenInfo}, res, false);
       req.body = perfil;
       mostrarPagina(req, res);
     }
+  }
+}
+
+const checkToken = async (req, res) => {
+  console.log("checkToken", req.headers.authorization);
+  if(req.headers.authorization != "null"){
+    console.log("dentro")
+    let tokenInfo = await comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
+    console.log("tokenInfo checkToken", tokenInfo);
+    res.send({user: tokenInfo}); 
   }
 }
  
@@ -179,5 +190,6 @@ module.exports = {
   checkPerfil,
   enviarToken,
   recibirToken,
-  borrarImg
+  borrarImg,
+  checkToken
 };

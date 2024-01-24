@@ -1,3 +1,4 @@
+// import { enviarToken } from "../../funcions.js";
 import { 
   eventoEditar,
   eventoGuardar,
@@ -182,8 +183,19 @@ async function cargarUsuario(){
   }
 }
 
+async function enviarToken(){
+  let token = localStorage.getItem("token");
+  let response = await fetch("/checkToken" , {method: "POST", headers: {"authorization": token} });
+  let result = await response.json();
+  console.log(result)
+  if(result.user != ""){
+    location.replace("./" + result.user);
+  }
+}
+
 export {
   cargarUsuario, 
   creoTarjeta,
-  creoTarjetaPublica
+  creoTarjetaPublica,
+  enviarToken
 }

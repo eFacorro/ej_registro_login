@@ -6,6 +6,9 @@ import {
   checkNewUser,
   checkPass} from "./eventos.js";
 
+import {
+  enviarToken} from "./helpers.js";
+
 formRexistro.style.display = "none";
 registroSpan.style.opacity = 0.5;
 
@@ -15,3 +18,4 @@ registroUser();
 loginUser();
 checkNewUser();
 checkPass();
+enviarToken();
