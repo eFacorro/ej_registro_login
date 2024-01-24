@@ -1,8 +1,12 @@
-// import { enviarToken } from "../../funcions.js";
 import { 
   eventoEditar,
   eventoGuardar,
-  eventoBorrar } from "./eventos.js"
+  eventoBorrar,
+  registroUser,
+  checkNewUser,
+  eventoRecargar,
+  checkPass,
+  salir } from "./eventos.js"
 
 const comunicandoServer = async (datos)=>{
   let response;
@@ -196,10 +200,32 @@ async function enviarToken(){
   }
 }
 
+function configurador(result){
+  if (result.status){
+    if(result.user.admin){
+      document.querySelector("html").innerHTML = result.html;
+      cargarUsuario();
+      registroUser();
+      checkNewUser();
+      eventoRecargar();
+      checkPass();
+    } else {
+      document.querySelector("html").innerHTML = result.html;
+      creoTarjeta(result.user);
+    }
+    salir();
+  } else{
+    let ref = document.querySelector("#formLogin > span");
+    ref.innerText = result.msg;
+    ref.style.display = "block";
+  }
+}
+
 export {
   comunicandoServer,
   cargarUsuario, 
   creoTarjeta,
   creoTarjetaPublica,
-  enviarToken
+  enviarToken,
+  configurador
 }

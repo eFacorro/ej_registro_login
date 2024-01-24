@@ -32,7 +32,7 @@ app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);
 app.put("/update", updateUser, borrarImg);
-app.post("/delete", deleteUser, borrarImg);
+app.post("/delete", deleteUser, borrarImg);  // con delete no funciona
 app.post("/checktoken", checkToken);
 app.get("/leertodo", LeerUsers);
 app.get("/:user", checkPerfil);

@@ -1,7 +1,8 @@
 import {
   cargarUsuario,
   creoTarjeta,
-  comunicandoServer } from "./helpers.js";
+  comunicandoServer,
+  configurador } from "./helpers.js";
 
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
@@ -29,29 +30,14 @@ function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let token = localStorage.getItem('token');
-    let response = await fetch("/login", {method: "POST",body: new FormData(formLogin), headers: {"authorization": token} });
-    let result = await response.json();
+    let datos = {
+      endpoint: "/login",
+      tipoComunicacion: {method: "POST", body: new FormData(formLogin), headers: {"authorization": token} }
+    }
+    let result = await comunicandoServer(datos);
     console.log(result)
     localStorage.setItem('token', result.token);
-
-    if (result.status){
-      if(result.user.admin){
-        document.querySelector("html").innerHTML = result.html;
-        cargarUsuario();
-        registroUser();
-        checkNewUser();
-        eventoRecargar();
-        checkPass();
-      } else {
-        document.querySelector("html").innerHTML = result.html;
-        creoTarjeta(result.user);
-      }
-      location.replace("./" + result.user.user);
-    } else{
-      let ref = document.querySelector("#formLogin > span");
-      ref.innerText = result.msg;
-      ref.style.display = "block";
-    }
+    configurador(result);
   });
 }
 
@@ -63,8 +49,11 @@ function registroUser(){
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
     let checkPwd = await funcCheckPass(pass);
     if (checkUser && checkPwd){
-      let response = await fetch("/rexistro", {method: "POST", body: new FormData(formRexistro)});
-      let result = await response.json();
+      let datos = {
+      endpoint: "/rexistro",
+      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
+    }
+    let result = await comunicandoServer(datos);
       console.log("resposta de rexistrarUsuario: ", result);
       formRexistro.reset();
       if(rexistrarUsuario.value === "admin"){
@@ -95,8 +84,11 @@ async function funcCheckNuewUser(newUser){
     rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto el boton no funciona bien
     return false
   } else {
-    let response = await fetch("/check", {method: "POST", body: new FormData(formRexistro) });
-    result = await response.json();
+    let datos = {
+      endpoint: "/check",
+      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
+    }
+    let result = await comunicandoServer(datos);
     // console.log("resposta de checkUser: ", result);
   }
   ref.innerText = result.msg;
@@ -188,8 +180,6 @@ function eventoGuardar(id){
         formulario.append(input.name, input.value);
       }
     }
-    
-    // let response = await fetch("/update", {method: "POST", body: formulario, files: img.src});
     let datos = {
       endpoint: "/update",
       tipoComunicacion: {method: "PUT", body: formulario, files: img.src}
@@ -207,7 +197,7 @@ function eventoBorrar(id){
     formulario.append("_id", id.slice(2));
     let datos = {
       endpoint: "/delete",
-      tipoComunicacion: {method: "PUT", body: formulario}
+      tipoComunicacion: {method: "POST", body: formulario}
     }
     let result = await comunicandoServer(datos);
     console.log("resposta de borrarUsuario: ", result);

@@ -98,6 +98,7 @@ const updateUser = (req, res, next) => {
 }
 
 const deleteUser = (req, res, next) => {
+  console.log(req.body)
   borrarUsuario(req, res, next, req.body._id)
 }
 
