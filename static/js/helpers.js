@@ -175,7 +175,7 @@ function creoTarjetaPublica(usuario){
 
 async function cargarUsuario(){
   let datos = {
-    endpoint: '/leerTodo'
+    endpoint: '/leertodo'
   }
   let usuarios = await comunicandoServer(datos);
   for(let usuario of usuarios.datos){
@@ -185,8 +185,11 @@ async function cargarUsuario(){
 
 async function enviarToken(){
   let token = localStorage.getItem("token");
-  let response = await fetch("/checkToken" , {method: "POST", headers: {"authorization": token} });
-  let result = await response.json();
+  let datos = {
+    endpoint: "/checktoken",
+    tipoComunicacion: {method: "POST", headers: {"authorization": token}}
+  }
+  let result = await comunicandoServer(datos);
   console.log(result)
   if(result.user != ""){
     location.replace("./" + result.user);
@@ -194,6 +197,7 @@ async function enviarToken(){
 }
 
 export {
+  comunicandoServer,
   cargarUsuario, 
   creoTarjeta,
   creoTarjetaPublica,

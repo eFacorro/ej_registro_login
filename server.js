@@ -31,10 +31,10 @@ app.use(express.static(carpetaStatic));
 app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);
-app.post("/update", updateUser, borrarImg);
+app.put("/update", updateUser, borrarImg);
 app.post("/delete", deleteUser, borrarImg);
-app.post("/checkToken", checkToken);
-app.get("/leerTodo", LeerUsers);
+app.post("/checktoken", checkToken);
+app.get("/leertodo", LeerUsers);
 app.get("/:user", checkPerfil);
 app.post("/:user", recibirToken);
 

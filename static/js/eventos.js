@@ -1,6 +1,7 @@
 import {
   cargarUsuario,
-  creoTarjeta } from "./helpers.js";
+  creoTarjeta,
+  comunicandoServer } from "./helpers.js";
 
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
@@ -188,8 +189,12 @@ function eventoGuardar(id){
       }
     }
     
-    let response = await fetch("/update", {method: "POST", body: formulario, files: img.src});
-    let result = await response.json();
+    // let response = await fetch("/update", {method: "POST", body: formulario, files: img.src});
+    let datos = {
+      endpoint: "/update",
+      tipoComunicacion: {method: "PUT", body: formulario, files: img.src}
+    }
+    let result = await comunicandoServer(datos);
     // console.log("resposta de guardarUsuario: ", result);
   })
 }
@@ -200,8 +205,11 @@ function eventoBorrar(id){
     e.preventDefault();
     let formulario = new FormData();
     formulario.append("_id", id.slice(2));
-    let response = await fetch("/delete", {method: "POST", body: formulario});
-    let result = await response.json();
+    let datos = {
+      endpoint: "/delete",
+      tipoComunicacion: {method: "PUT", body: formulario}
+    }
+    let result = await comunicandoServer(datos);
     console.log("resposta de borrarUsuario: ", result);
 
     let form = document.querySelector("#" + id);
