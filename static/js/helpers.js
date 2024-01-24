@@ -211,6 +211,7 @@ function configurador(result){
       checkPass();
     } else {
       document.querySelector("html").innerHTML = result.html;
+      document.querySelector("title").innerText = result.user.user;
       creoTarjeta(result.user);
     }
     salir();

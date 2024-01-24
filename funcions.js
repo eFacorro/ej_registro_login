@@ -109,7 +109,7 @@ const mostrarPagina = async (req, res) => {
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Admin"});
   } else {
     const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
-    res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Usuario contraseña incorrectos"});
+    res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Usuario y contraseña correctos"});
   } 
 }
 
