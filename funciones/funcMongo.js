@@ -51,6 +51,10 @@ async function comprobarLogin(req, res, next) {
 
 async function comprobarUser(usuario, res, check){
   try {
+    if(usuario.user == ""){
+      res.send({status: true, msg: "El usuario es obligatorio"});
+      return
+    }
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -68,9 +72,8 @@ async function comprobarUser(usuario, res, check){
         }
       }
     }
-    console.log(check)
     if(check){
-      res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
+      res.send({status: false, msg: "El usuario es nuevo"});
     }
   } finally { 
     await client.close();

@@ -51,10 +51,11 @@ function registroUser(){
   rexistrarUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let newUser = document.querySelector("#formRexistro > input[name='user']");
-    let checkUser = await funcCheckNuewUser(newUser);
+    flatUser = await funcCheckNuewUser(newUser);
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
-    let checkPwd = await funcCheckPass(pass);
-    if (!checkUser && !checkPwd){
+    flatPwd = await funcCheckPass(pass);
+    funcCheckRegistro(flatUser, flatPwd);
+    if (!flatUser && !flatPwd){
       let datos = {
       endpoint: "/rexistro",
       tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
@@ -90,6 +91,7 @@ async function funcCheckNuewUser(newUser){
     tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
   }
   result = await comunicandoServer(datos);
+  
   ref.innerText = result.msg;
   if (result.status){
     ref.style.display = "block";
