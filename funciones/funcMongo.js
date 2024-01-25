@@ -10,13 +10,13 @@ const client = new MongoClient(url);
 async function insertarUsuario(usuario) {
   try {
     await client.connect();
-      const db = client.db(database);
-      const coll = db.collection(coleccion);
-      const result = await coll.insertOne(usuario);
-      console.log('en insertar datos: ',result);
-      let respuesta = usuario;
-      respuesta._id = result.insertedId;
-      return respuesta
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    const result = await coll.insertOne(usuario);
+    console.log('en insertar datos: ',result);
+    let respuesta = usuario;
+    respuesta._id = result.insertedId;
+    return respuesta
   } finally {
     await client.close();
   }
@@ -63,7 +63,7 @@ async function comprobarUser(usuario, res, check){
 
     for await(const key of result){
       if (key.user === usuario.user){
-        console.log("ya existe");
+        console.log("ya existe", check);
         if(check){
           res.send({status: true, msg: "El usuario ya existe"});
           return
@@ -75,7 +75,7 @@ async function comprobarUser(usuario, res, check){
     if(check){
       res.send({status: false, msg: "El usuario es nuevo"});
     }
-  } finally { 
+  } finally {
     await client.close();
   }
 }

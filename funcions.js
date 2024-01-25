@@ -113,8 +113,8 @@ const mostrarPagina = async (req, res) => {
   } 
 }
 
-const checkUser = (req, res) => {
-  comprobarUser({user: req.body.user}, res, true);
+const checkUser = async (req, res) => {
+  await comprobarUser({user: req.body.user}, res, true);
 }
 
 function estructurarDatos(datos){
