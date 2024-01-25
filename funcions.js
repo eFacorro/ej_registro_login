@@ -64,9 +64,9 @@ function borrarImg(req, res){
 
 const loginUser = (req, res, next) => {
   console.log("loginUser ",req.headers.authorization)
-  if(req.headers.authorization != "null"){
-    console.log(comprobarToken(req, res));/// devuelte nombre de usuario o undefined si no coincide
-  }
+  // if(req.headers.authorization != "null"){
+  //   console.log(comprobarToken(req, res));/// devuelte nombre de usuario o undefined si no coincide
+  // }
   comprobarLogin(req, res, next)
 }
 
@@ -147,7 +147,9 @@ const checkPerfil = async (req, res) => {
       res.send(userFile);
     } else {
       console.log("El usuario no existe");
-      res.send("El usuario no existe");
+      // res.send("El usuario no existe");
+      let userFile = await fs.readFile(carpetaStatic + "\\nouser.html", 'utf8');
+      res.send(userFile);
     }
   }
 }
@@ -166,7 +168,12 @@ const recibirToken = async (req, res) => {
       const perfil = await comprobarUser({user: tokenInfo}, res, false);
       req.body = perfil;
       mostrarPagina(req, res);
+    } else{
+      res.send({status: true, user:{user: req.params}, public: true});
     }
+  } else{
+    // res.send({status: false, user:{user: req.params}, public: true}); // asi solo puedes ver perfiles si estas registrado
+    res.send({status: true, user:{user: req.params}, public: true});
   }
 }
 

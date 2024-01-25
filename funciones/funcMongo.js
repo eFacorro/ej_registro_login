@@ -43,7 +43,7 @@ async function comprobarLogin(req, res, next) {
       return
     }
     console.log("usuario y/o contraseña incorrectos");
-    res.status(401).send({status: false, msg: "Usuario y/o contraseña incorrectos"});
+    res.send({status: false, msg: "Usuario y/o contraseña incorrectos"});
   } finally {
     await client.close();
   }
@@ -68,7 +68,10 @@ async function comprobarUser(usuario, res, check){
         }
       }
     }
-    res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
+    console.log(check)
+    if(check){
+      res.send({status: false, msg: "El usuario es nuevo"});    ///hacer conpatible el comprobar user con comprobar perfil
+    }
   } finally { 
     await client.close();
   }

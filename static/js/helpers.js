@@ -11,12 +11,13 @@ import {
 const comunicandoServer = async (datos)=>{
   let response;
   if(datos.tipoComunicacion !== undefined){
-      console.log('entra en POST',datos.tipoComunicacion)
+      console.log('entra en POST',datos)
       response = await fetch(datos.endpoint,datos.tipoComunicacion);//'POST'
   }else{
       response = await fetch(datos.endpoint);// 'GET'
   }
   let resposta = await response.json();
+  console.log("comunicandoServer ", resposta)
   return resposta
 }
 
@@ -202,24 +203,34 @@ async function enviarToken(){
 
 function configurador(result){
   if (result.status){
-    if(result.user.admin){
-      document.querySelector("html").innerHTML = result.html;
-      cargarUsuario();
-      registroUser();
-      checkNewUser();
-      eventoRecargar();
-      checkPass();
-    } else {
-      document.querySelector("html").innerHTML = result.html;
-      document.querySelector("title").innerText = result.user.user;
-      creoTarjeta(result.user);
+    if(!result.public){
+      if(result.user.admin){
+        document.querySelector("html").innerHTML = result.html;
+        cargarUsuario();
+        registroUser();
+        checkNewUser();
+        eventoRecargar();
+        checkPass();
+      } else {
+        document.querySelector("html").innerHTML = result.html;
+        document.querySelector("title").innerText = result.user.user;
+        creoTarjeta(result.user);
+      }
     }
-    salir();
   } else{
-    let ref = document.querySelector("#formLogin > span");
-    ref.innerText = result.msg;
-    ref.style.display = "block";
+    if(result.public){
+      location.replace("/")
+    } else {
+      let ref = document.querySelector("#formLogin > span");
+      console.log("else ", result.msg);
+      ref.innerText = result.msg;
+      ref.style.display = "block";
+      return
+    }
   }
+  let insertHtml = document.querySelector(".lista-usuarios");
+  insertHtml.style.display = "flex";
+  salir();
 }
 
 export {

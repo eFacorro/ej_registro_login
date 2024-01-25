@@ -4,6 +4,9 @@ import {
   comunicandoServer,
   configurador } from "./helpers.js";
 
+let flatPwd = false;
+let flatUser = false;
+
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
     e.preventDefault();
@@ -35,8 +38,11 @@ function loginUser(){
       tipoComunicacion: {method: "POST", body: new FormData(formLogin), headers: {"authorization": token} }
     }
     let result = await comunicandoServer(datos);
-    console.log(result)
-    localStorage.setItem('token', result.token);
+    // console.log(result);
+    if(result.token != undefined){
+      localStorage.setItem('token', result.token);
+      location.replace("/" + result.user.user);
+    }
     configurador(result);
   });
 }
@@ -48,20 +54,20 @@ function registroUser(){
     let checkUser = await funcCheckNuewUser(newUser);
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
     let checkPwd = await funcCheckPass(pass);
-    if (checkUser && checkPwd){
+    if (!checkUser && !checkPwd){
       let datos = {
       endpoint: "/rexistro",
       tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
     }
     let result = await comunicandoServer(datos);
-      console.log("resposta de rexistrarUsuario: ", result);
+      // console.log("resposta de rexistrarUsuario: ", result);
       formRexistro.reset();
       if(rexistrarUsuario.value === "admin"){
         creoTarjeta(result.user);
       }
       else {
         localStorage.setItem('token', result.token);
-        location.replace("./" + result.user.user)  // insertar pagina despues de logearse
+        location.replace("./" + result.user.user)  // insertar pagina despues de registrarse
       }
     }
   });
@@ -69,39 +75,30 @@ function registroUser(){
 
 function checkNewUser(){
   let newUser = document.querySelector("#formRexistro > input[name='user']");
-  newUser.addEventListener("change", (e) => {
+  newUser.addEventListener("change", async (e) => {
     e.preventDefault();
-    funcCheckNuewUser(newUser);
+    flatUser = await funcCheckNuewUser(newUser);
+    funcCheckRegistro(flatUser, flatPwd);
   });
 }
 
 async function funcCheckNuewUser(newUser){
   let result;
   let ref = document.querySelector("#formRexistro > span");
-  if(newUser.value.length < 4) {
-    ref.innerText = "El usuario minimo 4 caracteres";
-    ref.style.display = "block";
-    rexistrarUsuario.disabled = true;    //se pisa pass a user reestructurar esto el boton no funciona bien
-    return false
-  } else {
-    let datos = {
-      endpoint: "/check",
-      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
-    }
-    let result = await comunicandoServer(datos);
-    // console.log("resposta de checkUser: ", result);
+  let datos = {
+    endpoint: "/check",
+    tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
   }
+  result = await comunicandoServer(datos);
   ref.innerText = result.msg;
   if (result.status){
     ref.style.display = "block";
     newUser.style.color = "red";
-    rexistrarUsuario.disabled = true;
-    return false
+    return true
   } else {
     ref.style.display = "none";
     newUser.style.color = "black";
-    rexistrarUsuario.disabled = false;
-    return true
+    return false
   }
 }
 
@@ -109,7 +106,8 @@ function checkPass(){
   let pass = document.querySelector("#formRexistro > input[name='pwd']");
   pass.addEventListener("change", (e) => {
     e.preventDefault();
-    funcCheckPass(pass);
+    flatPwd = funcCheckPass(pass);
+    funcCheckRegistro(flatUser, flatPwd);
   });
 }
 
@@ -118,12 +116,19 @@ function funcCheckPass(pass){
   if(pass.value.length < 4){
     ref.innerText = "Contraseña minima 4 caracteres";
     ref.style.display = "block";
-    rexistrarUsuario.disabled = true;
-    return false
-  } else {
-    ref.style.display = "none";
-    rexistrarUsuario.disabled = false;
     return true
+  } else {
+    ref.innerText = "";
+    ref.style.display = "none";
+    return false
+  }
+}
+
+function funcCheckRegistro(flatUser, flatPwd){
+  if(flatUser || flatPwd){
+    rexistrarUsuario.disabled = true;
+  } else {
+    rexistrarUsuario.disabled = false;
   }
 }
 
@@ -172,11 +177,8 @@ function eventoGuardar(id){
     for (let input of form){
       input.disabled = true;
       if(input.name == "usuario"){
-        console.log(input.name, input.files[0]);
         formulario.append(input.name, input.files[0]);
-        // formulario.append(input.name, img.src);
       } else{
-        console.log(input.name, input.value);
         formulario.append(input.name, input.value);
       }
     }
@@ -200,7 +202,7 @@ function eventoBorrar(id){
       tipoComunicacion: {method: "POST", body: formulario}
     }
     let result = await comunicandoServer(datos);
-    console.log("resposta de borrarUsuario: ", result);
+    // console.log("resposta de borrarUsuario: ", result);
 
     let form = document.querySelector("#" + id);
     form.remove();
