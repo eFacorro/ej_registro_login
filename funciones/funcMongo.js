@@ -63,7 +63,7 @@ async function comprobarUser(usuario, res, check){
 
     for await(const key of result){
       if (key.user === usuario.user){
-        console.log("ya existe", check);
+        console.log("ya existe");
         if(check){
           res.send({status: true, msg: "El usuario ya existe"});
           return

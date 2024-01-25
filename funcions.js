@@ -167,7 +167,8 @@ const recibirToken = async (req, res) => {
       console.log("tokenInfo recibirToken", tokenInfo);
       const perfil = await comprobarUser({user: tokenInfo}, res, false);
       req.body = perfil;
-      mostrarPagina(req, res);
+      await mostrarPagina(req, res);
+      console.log("recibirToken");
     } else{
       res.send({status: true, user:{user: req.params}, public: true});
     }
