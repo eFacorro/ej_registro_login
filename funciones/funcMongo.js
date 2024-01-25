@@ -66,9 +66,9 @@ async function comprobarUser(usuario, res, check){
         console.log("ya existe");
         if(check){
           res.send({status: true, msg: "El usuario ya existe"});
-          return
+          return   // arreglo fallo inicio sesion admin
         } else {
-          return key 
+          return key
         }
       }
     }

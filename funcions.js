@@ -162,13 +162,11 @@ const recibirToken = async (req, res) => {
   console.log("recibirToken", req.params);
   if(req.headers.authorization != "null"){
     let tokenInfo = comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
-    console.log("tokenInfo", tokenInfo);
     if (req.params.user == tokenInfo){
       console.log("tokenInfo recibirToken", tokenInfo);
       const perfil = await comprobarUser({user: tokenInfo}, res, false);
       req.body = perfil;
       await mostrarPagina(req, res);
-      console.log("recibirToken");
     } else{
       res.send({status: true, user:{user: req.params}, public: true});
     }

@@ -35,7 +35,7 @@ app.put("/update", updateUser, borrarImg);
 app.post("/delete", deleteUser, borrarImg);  // con delete no funciona
 app.post("/checktoken", checkToken);
 app.get("/leertodo", LeerUsers);
-app.get("/:user", checkPerfil);
+app.get("/:user", checkPerfil);   // falla el inicio de admin a veces
 app.post("/:user", recibirToken);
 
 app.listen(3000, function () {
