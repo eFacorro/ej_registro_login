@@ -4,7 +4,8 @@ import {
   loginUser,
   registroUser,
   checkNewUser,
-  checkPass} from "./eventos.js";
+  checkPass,
+  checkMail} from "./eventos.js";
 
 import {
   enviarToken} from "./helpers.js";
@@ -18,4 +19,5 @@ registroUser();
 loginUser();
 checkNewUser();
 checkPass();
+checkMail();
 enviarToken();

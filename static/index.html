@@ -13,15 +13,17 @@
       <h1>Portal de Inicio</h1>
       <nav><span id="loginSpan">Logueo</span><span id="registroSpan">Registro</span></nav>
       <form id="formLogin" name="Login" enctype="multipart/form-data">
-        <input name="user" type="text" placeholder="Usuario" />
+        <input name="user" type="text" placeholder="Usuario o eMail" />
         <span></span>
         <input name="pwd" type="password" placeholder="Contraseña" />
         <button id="loginUsuario">Enviar</button>
       </form>
       <form id="formRexistro" name="rexistro" enctype="multipart/form-data">
-        <input name="user" type="text" placeholder="Usuario" />
+        <input name="user" type="text" required placeholder="Usuario" />
         <span></span>
-        <input name="pwd" type="password" placeholder="Contraseña" />
+        <input name="mail" type="email" required placeholder="Mail" />
+        <span></span>
+        <input name="pwd" type="password" required placeholder="Contraseña" />
         <span></span>
         <input name="usuario" type="file" />
         <input name="nombre" type="text" placeholder="Nombre" />

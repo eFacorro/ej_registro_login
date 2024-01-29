@@ -6,6 +6,7 @@ import {
 
 let flatPwd = false;
 let flatUser = false;
+let flatMail = false;
 
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
@@ -33,6 +34,10 @@ function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let token = localStorage.getItem('token');
+    let userOMail = document.querySelector("#formLogin > input[name='user']")
+    if (!funcCheckMail(userOMail)){
+      userOMail.setAttribute("name", "mail");
+    }
     let datos = {
       endpoint: "/login",
       tipoComunicacion: {method: "POST", body: new FormData(formLogin), headers: {"authorization": token} }
@@ -52,10 +57,12 @@ function registroUser(){
     e.preventDefault();
     let newUser = document.querySelector("#formRexistro > input[name='user']");
     flatUser = await funcCheckNuewUser(newUser);
+    let mail = document.querySelector("#formRexistro > input[name='mail']");
+    flatMail = funcCheckMail(mail);
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
     flatPwd = await funcCheckPass(pass);
-    funcCheckRegistro(flatUser, flatPwd);
-    if (!flatUser && !flatPwd){
+    funcCheckRegistro(flatUser, flatPwd, flatMail);
+    if (!flatUser && !flatPwd && !flatMail){
       let datos = {
       endpoint: "/rexistro",
       tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
@@ -79,7 +86,7 @@ function checkNewUser(){
   newUser.addEventListener("change", async (e) => {
     e.preventDefault();
     flatUser = await funcCheckNuewUser(newUser);
-    funcCheckRegistro(flatUser, flatPwd);
+    funcCheckRegistro(flatUser, flatPwd, flatMail);
   });
 }
 
@@ -109,12 +116,12 @@ function checkPass(){
   pass.addEventListener("change", (e) => {
     e.preventDefault();
     flatPwd = funcCheckPass(pass);
-    funcCheckRegistro(flatUser, flatPwd);
+    funcCheckRegistro(flatUser, flatPwd, flatMail);
   });
 }
 
 function funcCheckPass(pass){
-  let ref = document.querySelector("#formRexistro > span:nth-child(4)");
+  let ref = document.querySelector("#formRexistro > span:nth-child(6)");
   if(pass.value.length < 4){
     ref.innerText = "Contraseña minima 4 caracteres";
     ref.style.display = "block";
@@ -126,8 +133,36 @@ function funcCheckPass(pass){
   }
 }
 
-function funcCheckRegistro(flatUser, flatPwd){
-  if(flatUser || flatPwd){
+function checkMail(){
+  let mail = document.querySelector("#formRexistro > input[name='mail']");
+  mail.addEventListener("change", (e) => {
+    e.preventDefault();
+    flatMail = funcCheckMail(mail);
+    funcCheckRegistro(flatUser, flatPwd, flatMail);
+  });
+}
+
+function funcCheckMail(mail){
+  console.log("funcCheckMail", mail.value)
+  let ref = document.querySelector("#formRexistro > span:nth-child(4)");
+
+  var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (mail.value.match(validRegex)) {
+    console.log("formato de email correcto");
+    ref.innerText = "";
+    ref.style.display = "none";
+    return false;
+  } else {
+    console.log("formato de email incorrecto");
+    ref.innerText = "formato de email incorrecto";
+    ref.style.display = "block";
+    return true
+  }
+}
+
+function funcCheckRegistro(flatUser, flatPwd, flatMail){
+  if(flatUser || flatPwd || flatMail){
     rexistrarUsuario.disabled = true;
   } else {
     rexistrarUsuario.disabled = false;
@@ -242,5 +277,6 @@ export {
   eventoBorrar,
   eventoRecargar,
   checkPass,
-  salir
+  salir,
+  checkMail
 }

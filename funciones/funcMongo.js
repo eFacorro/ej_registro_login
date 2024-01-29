@@ -27,11 +27,10 @@ async function comprobarLogin(req, res, next) {
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
-    
-    const result = coll.find(req.body);//(usuario);
+    const result = coll.find(req.body);
 
     for await(const key of result){
-      if (key.user === req.body.user && key.pwd === req.body.pwd){
+      if (key.pwd === req.body.pwd){
         req.body = key;
         if (key.admin === true){
           next();
@@ -144,11 +143,24 @@ async function borrarUsuario(req, res, next, id) {
   }
 }
 
+async function emailVerificado(mail){
+  await client.connect();
+  const db = client.db(database);
+  const coll = db.collection(coleccion);
+  const filtro ={
+      mail: mail
+  }
+  const dato = {$set: {mailVerificado: true}};
+  const result = await coll.updateOne(filtro, dato);
+  console.log(result);
+}
+
 module.exports = {
   insertarUsuario,
   comprobarLogin,
   comprobarUser,
   leerTodo,
   actualizarUsuario,
-  borrarUsuario
+  borrarUsuario,
+  emailVerificado
 }

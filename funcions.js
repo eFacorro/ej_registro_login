@@ -4,7 +4,8 @@ const {
   comprobarUser,
   leerTodo,
   actualizarUsuario,
-  borrarUsuario } = require("./funciones/funcMongo.js");
+  borrarUsuario,
+  emailVerificado } = require("./funciones/funcMongo.js");
 
 const {
   crearToken,
@@ -140,6 +141,7 @@ const checkPerfil = async (req, res) => {
     const perfil = await comprobarUser({user: req.params.user}, res, false);
     if (perfil != undefined){
       delete perfil.pwd
+      delete perfil.mail
       let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
       // userFile = userFile.replace("USER", perfil.user);
       userFile = userFile.replace("USER", JSON.stringify(perfil));
@@ -155,13 +157,14 @@ const checkPerfil = async (req, res) => {
 }
 
 const enviarToken = (req, res, next) => {
-  crearToken(req, res, next);
+  let datos = {user: req.body.user, pwd: req.body.pwd};
+  crearToken(req, res, next, datos);
 }
 
 const recibirToken = async (req, res) => {
   console.log("recibirToken", req.params);
   if(req.headers.authorization != "null"){
-    let tokenInfo = comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
+    let tokenInfo = comprobarToken(req.headers.authorization).user;
     if (req.params.user == tokenInfo){
       console.log("tokenInfo recibirToken", tokenInfo);
       const perfil = await comprobarUser({user: tokenInfo}, res, false);
@@ -180,9 +183,17 @@ const checkToken = async (req, res) => {
   console.log("checkToken", req.headers.authorization);
   if(req.headers.authorization != "null"){
     console.log("dentro")
-    let tokenInfo = await comprobarToken(req, res);/// devuelte nombre de usuario o undefined si no coincide
+    let tokenInfo = await comprobarToken(req.headers.authorization).user;
     console.log("tokenInfo checkToken", tokenInfo);
     res.send({user: tokenInfo}); 
+  }
+}
+
+async function verifiMail(req, res){
+  let mail = await comprobarToken(req.params.token).mail;
+  console.log("verifiMail", mail);
+  if(mail != ""){
+    emailVerificado(mail);
   }
 }
  
@@ -198,5 +209,6 @@ module.exports = {
   enviarToken,
   recibirToken,
   borrarImg,
-  checkToken
+  checkToken,
+  verifiMail
 };

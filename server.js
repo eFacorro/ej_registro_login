@@ -11,7 +11,8 @@ const {
   recibirToken,
   enviarToken,
   borrarImg,
-  checkToken } = require("./funcions.js");
+  checkToken,
+  verifiMail } = require("./funcions.js");
 
 const express = require("express");
 const path = require("path");
@@ -35,6 +36,7 @@ app.put("/update", updateUser, borrarImg);
 app.post("/delete", deleteUser, borrarImg);  // con delete no funciona
 app.post("/checktoken", checkToken);
 app.get("/leertodo", LeerUsers);
+app.get("/verificar/:token", verifiMail);
 app.get("/:user", checkPerfil);   // falla el inicio de admin a veces
 app.post("/:user", recibirToken);
 

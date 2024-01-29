@@ -1,36 +1,26 @@
 let jwt = require('jsonwebtoken');
 
-const crearToken = (req, res, next)=>{
-  let datos = {user: req.body.user, pwd: req.body.pwd};
+const crearToken = (req, res, next, datos)=>{
   console.log(req.headers.referer);
   let token = jwt.sign({ dato: datos }, process.env.SECRETO);
   req.token = token;
   next();
 }
 
-const comprobarToken = (req,res,next)=>{
-  console.log("req.headers.authorization: ",req.headers.authorization)
-  const { authorization } = req.headers;
-  console.log(`Estou en tesToken ${authorization} ${process.env.SECRETO}`);
+const comprobarToken = (token)=>{
+  console.log("req.headers.authorization: ", token)
+  console.log(`Estou en tesToken ${token} ${process.env.SECRETO}`);
   
-
-  // Se authorization está vacío devolvo un erro
-  if (!authorization) {
+  if (!token) {
     console.log("Falta a cabeceira de autorización");
-    // const error = new Error("Falta a cabeceira de autorización");
-    // error.httpStatus = 401;
-    // throw error;
   }
 
   let tokenInfo;
   
   try {
-    tokenInfo = jwt.verify(authorization, process.env.SECRETO);
-    return tokenInfo.dato.user
+    tokenInfo = jwt.verify(token, process.env.SECRETO);
+    return tokenInfo.dato
   } catch (e) {
-    // const error = new Error("El token no es válido");
-    // error.httpStatus = 401;
-    // throw error;
   }
 }
 

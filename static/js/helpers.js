@@ -41,7 +41,14 @@ function creoTarjeta(usuario){
   user.setAttribute("type", "text");
   user.setAttribute("placeholder", "Usuario");
   user.disabled = "true";
-  user.value = usuario.user;
+  user.value = usuario.user;  
+
+  let mail = document.createElement("input");
+  mail.setAttribute("name", "mail");
+  mail.setAttribute("type", "email");
+  mail.setAttribute("placeholder", "mail");
+  mail.disabled = "true";
+  mail.value = usuario.mail;
 
   let pwd = document.createElement("input");
   pwd.setAttribute("name", "pwd");
@@ -89,6 +96,7 @@ function creoTarjeta(usuario){
   form.appendChild(file);
   form.appendChild(img);
   form.appendChild(user);
+  form.appendChild(mail);
   form.appendChild(pwd);
   form.appendChild(nombre);
   form.appendChild(primerApellido);
