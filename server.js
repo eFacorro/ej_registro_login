@@ -12,7 +12,8 @@ const {
   enviarToken,
   borrarImg,
   checkToken,
-  verifiMail } = require("./funcions.js");
+  verifiMail,
+  checkMail } = require("./funcions.js");
 
 const express = require("express");
 const path = require("path");
@@ -32,6 +33,7 @@ app.use(express.static(carpetaStatic));
 app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);
+app.post("/checkMail", checkMail);
 app.put("/update", updateUser, borrarImg);
 app.post("/delete", deleteUser, borrarImg);  // con delete no funciona
 app.post("/checktoken", checkToken);

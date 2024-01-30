@@ -5,11 +5,15 @@ const {
   leerTodo,
   actualizarUsuario,
   borrarUsuario,
-  emailVerificado } = require("./funciones/funcMongo.js");
+  emailVerificado,
+  comprobarMail } = require("./funciones/funcMongo.js");
 
 const {
   crearToken,
   comprobarToken } = require("./funciones/funcJWT.js");
+    
+const {
+  emailVerificacion } = require("./funciones/funcResend.js");
 
 const fs = require('fs');
 
@@ -47,6 +51,11 @@ const RexistroUser = async (req, res) => {
   // dato.user = await insertarUsuario(doc); //puede ser buena idea que la imgen se llame por la id
   dato.user = user;
   dato.token = req.token;    // si hay que añadir el token a la bbdd hay que modificar esto
+  const fs = require('node:fs/promises');
+  const userFile = await fs.readFile(carpetaStatic + "\\verifica.html", 'utf8');
+  dato.html = userFile;
+  console.log("mail", dato.user.mail);
+  emailVerificacion(dato.user.mail);
   res.status(200).send(dato);
 };
 
@@ -105,17 +114,22 @@ const deleteUser = (req, res, next) => {
 
 const mostrarPagina = async (req, res) => {
   const fs = require('node:fs/promises');
+  console.log("//mostrarPagina//")
   if (req.body.admin){
     const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Admin"});
   } else {
     const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Usuario y contraseña correctos"});
-  } 
+  }
 }
 
 const checkUser = async (req, res) => {
-  await comprobarUser({user: req.body.user}, res, true);
+  await comprobarUser(req.body.user, res, true);
+}
+
+const checkMail = async (req, res) => {
+  await comprobarMail(req.body.mail, res, true);
 }
 
 function estructurarDatos(datos){
@@ -138,21 +152,24 @@ const LeerUsers = async (req,res) => {
 const checkPerfil = async (req, res) => {
   if(req.params.user != "favicon.ico"){
     const fs = require('node:fs/promises');
-    const perfil = await comprobarUser({user: req.params.user}, res, false);
-    if (perfil != undefined){
-      delete perfil.pwd
-      delete perfil.mail
-      let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
-      // userFile = userFile.replace("USER", perfil.user);
-      userFile = userFile.replace("USER", JSON.stringify(perfil));
-      userFile = userFile.replace("Buscador", perfil.user);
-      res.send(userFile);
-    } else {
-      console.log("El usuario no existe");
-      // res.send("El usuario no existe");
-      let userFile = await fs.readFile(carpetaStatic + "\\nouser.html", 'utf8');
-      res.send(userFile);
-    }
+    const perfil = await comprobarUser(req.params.user, res, false);
+      if (perfil != undefined){
+        delete perfil.pwd
+        delete perfil.mail
+        if(perfil.mailVerificado){
+          let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
+          userFile = userFile.replace("USER", JSON.stringify(perfil));
+          userFile = userFile.replace("Buscador", perfil.user);
+          res.send(userFile);
+        } else{
+          const userFile = await fs.readFile(carpetaStatic + "\\noverficado.html", 'utf8');
+          res.send(userFile);
+        }
+      } else {
+        console.log("El usuario no existe");
+        let userFile = await fs.readFile(carpetaStatic + "\\nouser.html", 'utf8');
+        res.send(userFile);
+      }
   }
 }
 
@@ -167,7 +184,7 @@ const recibirToken = async (req, res) => {
     let tokenInfo = comprobarToken(req.headers.authorization).user;
     if (req.params.user == tokenInfo){
       console.log("tokenInfo recibirToken", tokenInfo);
-      const perfil = await comprobarUser({user: tokenInfo}, res, false);
+      const perfil = await comprobarUser(tokenInfo, res, false);
       req.body = perfil;
       await mostrarPagina(req, res);
     } else{
@@ -194,6 +211,7 @@ async function verifiMail(req, res){
   console.log("verifiMail", mail);
   if(mail != ""){
     emailVerificado(mail);
+    res.send('<script>location.replace("../");</script>')
   }
 }
  
@@ -210,5 +228,6 @@ module.exports = {
   recibirToken,
   borrarImg,
   checkToken,
-  verifiMail
+  verifiMail,
+  checkMail
 };

@@ -6,6 +6,7 @@ import {
   checkNewUser,
   eventoRecargar,
   checkPass,
+  checkMail,
   salir } from "./eventos.js"
 
 const comunicandoServer = async (datos)=>{
@@ -219,6 +220,7 @@ function configurador(result){
         checkNewUser();
         eventoRecargar();
         checkPass();
+        checkMail();
       } else {
         document.querySelector("html").innerHTML = result.html;
         document.querySelector("title").innerText = result.user.user;

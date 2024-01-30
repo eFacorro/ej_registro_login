@@ -1,9 +1,11 @@
-require('dotenv').config()
-const { Resend } = require('resend');
+const {
+  jwtToken } = require("./funcJWT.js");
 
+const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_TOKEN);
 
-function verificarEmail(mailTo, urlVerificacion){
+function emailVerificacion(mailTo){
+  let urlVerificacion = process.env.DOMINIO + "/verificar/" + jwtToken({mail: mailTo});
   resend.emails.send({
     from: `"Mi app" <${process.env.MAIL_VERIFICACION}>`,
     to: mailTo,
@@ -13,5 +15,5 @@ function verificarEmail(mailTo, urlVerificacion){
 }
 
 module.exports = {
-  verificarEmail
+  emailVerificacion
 }

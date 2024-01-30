@@ -2,9 +2,13 @@ let jwt = require('jsonwebtoken');
 
 const crearToken = (req, res, next, datos)=>{
   console.log(req.headers.referer);
-  let token = jwt.sign({ dato: datos }, process.env.SECRETO);
+  let token = jwtToken(datos)
   req.token = token;
   next();
+}
+
+function jwtToken(datos){
+  return jwt.sign({ dato: datos }, process.env.SECRETO);
 }
 
 const comprobarToken = (token)=>{
@@ -26,5 +30,6 @@ const comprobarToken = (token)=>{
 
 module.exports = {
   crearToken,
-  comprobarToken
+  comprobarToken,
+  jwtToken
 }

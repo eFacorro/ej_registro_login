@@ -58,7 +58,7 @@ function registroUser(){
     let newUser = document.querySelector("#formRexistro > input[name='user']");
     flatUser = await funcCheckNuewUser(newUser);
     let mail = document.querySelector("#formRexistro > input[name='mail']");
-    flatMail = funcCheckMail(mail);
+    flatMail = await funcCheckMail(mail);
     let pass = document.querySelector("#formRexistro > input[name='pwd']");
     flatPwd = await funcCheckPass(pass);
     funcCheckRegistro(flatUser, flatPwd, flatMail);
@@ -75,7 +75,9 @@ function registroUser(){
       }
       else {
         localStorage.setItem('token', result.token);
-        location.replace("./" + result.user.user)  // insertar pagina despues de registrarse
+        // location.replace("./" + result.user.user)  // insertar pagina despues de registrarse
+        document.querySelector("html").innerHTML = result.html;
+        salir();
       }
     }
   });
@@ -93,13 +95,19 @@ function checkNewUser(){
 async function funcCheckNuewUser(newUser){
   let result;
   let ref = document.querySelector("#formRexistro > span");
-  let datos = {
-    endpoint: "/check",
-    tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
+  if(newUser.value == ""){
+    ref.innerText = "El usuario es obligatorio";
+    ref.style.display = "block";
+    newUser.style.color = "red";
+    return true
+  } else {
+    let datos = {
+      endpoint: "/check",
+      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
+    }
+    result = await comunicandoServer(datos);
+    ref.innerText = result.msg;
   }
-  result = await comunicandoServer(datos);
-  
-  ref.innerText = result.msg;
   if (result.status){
     ref.style.display = "block";
     newUser.style.color = "red";
@@ -135,15 +143,16 @@ function funcCheckPass(pass){
 
 function checkMail(){
   let mail = document.querySelector("#formRexistro > input[name='mail']");
-  mail.addEventListener("change", (e) => {
+  mail.addEventListener("change", async (e) => {
     e.preventDefault();
-    flatMail = funcCheckMail(mail);
+    flatMail = await funcCheckMail(mail);
     funcCheckRegistro(flatUser, flatPwd, flatMail);
   });
 }
 
-function funcCheckMail(mail){
-  console.log("funcCheckMail", mail.value)
+async function funcCheckMail(mail){
+  console.log("funcCheckMail", mail.value);
+  let result;
   let ref = document.querySelector("#formRexistro > span:nth-child(4)");
 
   var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -152,10 +161,25 @@ function funcCheckMail(mail){
     console.log("formato de email correcto");
     ref.innerText = "";
     ref.style.display = "none";
-    return false;
+    let datos = {
+      endpoint: "/checkMail",
+      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
+    }
+    result = await comunicandoServer(datos);
+    if (result.status){
+      ref.innerText = "Este email ya esta registrado";
+      ref.style.display = "block";
+      mail.style.color = "red";
+      return true
+    } else {
+      ref.innerText = "";
+      ref.style.display = "none";
+      mail.style.color = "black";
+      return false
+    }
   } else {
     console.log("formato de email incorrecto");
-    ref.innerText = "formato de email incorrecto";
+    ref.innerText = "Formato de email incorrecto";
     ref.style.display = "block";
     return true
   }

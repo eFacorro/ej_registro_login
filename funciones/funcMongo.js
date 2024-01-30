@@ -50,18 +50,14 @@ async function comprobarLogin(req, res, next) {
 
 async function comprobarUser(usuario, res, check){
   try {
-    if(usuario.user == ""){
-      res.send({status: true, msg: "El usuario es obligatorio"});
-      return
-    }
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
-    const busqueda = {user: usuario.user};
+    const busqueda = {user: usuario};
     const result = coll.find(busqueda);//(usuario);
 
     for await(const key of result){
-      if (key.user === usuario.user){
+      if (key.user === usuario){
         console.log("ya existe");
         if(check){
           res.send({status: true, msg: "El usuario ya existe"});
@@ -73,6 +69,33 @@ async function comprobarUser(usuario, res, check){
     }
     if(check){
       res.send({status: false, msg: "El usuario es nuevo"});
+    }
+  } finally {
+    await client.close();
+  }
+}
+
+async function comprobarMail(mail, res, check){
+  try {
+    await client.connect();
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    const busqueda = {mail: mail};
+    const result = coll.find(busqueda);//(usuario);
+
+    for await(const key of result){
+      if (key.mail === mail){
+        console.log("ya existe");
+        if(check){
+          res.send({status: true, msg: "El email ya esta rigistrado"});
+          return   // arreglo fallo inicio sesion admin
+        } else {
+          return key
+        }
+      }
+    }
+    if(check){
+      res.send({status: false, msg: "El email es nuevo"});
     }
   } finally {
     await client.close();
@@ -162,5 +185,6 @@ module.exports = {
   leerTodo,
   actualizarUsuario,
   borrarUsuario,
-  emailVerificado
+  emailVerificado,
+  comprobarMail
 }
