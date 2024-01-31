@@ -44,7 +44,9 @@
           endpoint: "/changepass",
           tipoComunicacion: {method: "POST", body: new FormData(formPass), headers: {"authorization": "token"}}
         }
-        let result = await fetch(datos.endpoint,datos.tipoComunicacion)
+        let response = await fetch(datos.endpoint,datos.tipoComunicacion);
+        let result = await response.json();
+        localStorage.setItem("token", result.token)
         location.replace("../");
       }
     });

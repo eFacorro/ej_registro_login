@@ -171,6 +171,24 @@ async function emailVerificado(mail){
   }
 }
 
+async function saveNewPass(mail, pwd){
+  try {
+    await client.connect();
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    const filtro ={
+        mail: mail
+    }
+    const dato = {$set: {pwd: pwd}};
+    let result = await coll.updateOne(filtro, dato);
+    console.log(result);
+    result = await coll.findOne(filtro);
+    return result
+  } finally {
+    await client.close();
+  }
+}
+
 module.exports = {
   insertarUsuario,
   comprobarLogin,
@@ -179,5 +197,6 @@ module.exports = {
   actualizarUsuario,
   borrarUsuario,
   emailVerificado,
-  comprobarMail
+  comprobarMail,
+  saveNewPass
 }

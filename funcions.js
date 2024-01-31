@@ -6,11 +6,13 @@ const {
   actualizarUsuario,
   borrarUsuario,
   emailVerificado,
-  comprobarMail } = require("./funciones/funcMongo.js");
+  comprobarMail,
+  saveNewPass } = require("./funciones/funcMongo.js");
 
 const {
   crearToken,
-  comprobarToken } = require("./funciones/funcJWT.js");
+  comprobarToken,
+  jwtToken } = require("./funciones/funcJWT.js");
     
 const {
   emailVerificacion,
@@ -206,27 +208,26 @@ async function verifiMail(req, res){
 }
 
 async function verifiPass(req, res){
-  if(req.params.token != "cambiacontraseña"){
-    const fs = require('node:fs/promises');
-    let mail = await comprobarToken(req.params.token).mail;
-    console.log("verifiPass", mail);
-    if(mail != ""){
-      emailVerificado(mail);
-      let userFile = await fs.readFile(carpetaStatic + "\\newpass.html", 'utf8');
-      userFile = userFile.replace("token", req.params.token);
-      res.send(userFile);
-    }
-  } else {
-    res.status(200)
+  const fs = require('node:fs/promises');
+  let mail = await comprobarToken(req.params.token).mail;
+  console.log("verifiPass", mail);
+  if(mail != ""){
+    emailVerificado(mail);
+    let userFile = await fs.readFile(carpetaStatic + "\\newpass.html", 'utf8');
+    userFile = userFile.replace("token", req.params.token);
+    res.send(userFile);
   }
 }
+
 
 async function changePass(req, res){
   let mail = await comprobarToken(req.headers.authorization).mail;
   console.log("changePass", req.body.pwd);
   if(mail != ""){
-    console.log("new pass");
-    res.status(200).send();
+    let result = await saveNewPass(mail, req.body.pwd);
+    let datos = {user: result.user, pwd: result.pwd};
+    result = jwtToken(datos);
+    res.status(200).send({token: result})
   }
 }
 
