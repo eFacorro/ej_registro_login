@@ -29,7 +29,7 @@ function emailVerificacion(mailTo){
     from: `"Mi app" <${process.env.MAIL_VERIFICACION}>`,
     to: mailTo,
     subject: "Verificacón de Correo",
-    html: `<p>Verifica que el correo con es tuyo: <p><a href="${urlVerificacion}">verificar</a><p>${urlVerificacion}</p>`
+    html: `<p>Verifica que el correo con es tuyo: <p><a href="${urlVerificacion}">verificar</a>`// <p>${urlVerificacion}</p>`
   };
 
   transporter.sendMail(mailOptions, function(err, data) {
@@ -47,7 +47,7 @@ function emailPass(mailTo){
     from: `"Mi app" <${process.env.MAIL_VERIFICACION}>`,
     to: mailTo,
     subject: "Cambio de Contraseña",
-    html: `<p>Cambia tu contraseña aqui: <p><a href="${urlPass}">Cambiar Contraseña</a><p>${urlPass}</p>`
+    html: `<p>Cambia tu contraseña aqui: <p><a href="${urlPass}">Cambiar Contraseña</a>`// <p>${urlPass}</p>`
   };
 
   transporter.sendMail(mailOptions, function(err, data) {

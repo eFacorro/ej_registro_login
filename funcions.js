@@ -203,7 +203,10 @@ async function verifiMail(req, res){
   console.log("verifiMail", mail);
   if(mail != ""){
     emailVerificado(mail);
-    res.send('<script>location.replace("../");</script>')
+    let result = await saveNewPass(mail, req.body.pwd);
+    let datos = {user: result.user, pwd: result.pwd};
+    result = jwtToken(datos);
+    res.send(`<script>llocalStorage.setItem("token", "${result}")location.replace("../");</script>`)
   }
 }
 
