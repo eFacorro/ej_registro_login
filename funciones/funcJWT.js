@@ -12,19 +12,17 @@ function jwtToken(datos){
 }
 
 const comprobarToken = (token)=>{
-  console.log("req.headers.authorization: ", token)
-  console.log(`Estou en tesToken ${token} ${process.env.SECRETO}`);
-  
+  // console.log("req.headers.authorization: ", token)
+  // console.log(`Estou en tesToken ${token} ${process.env.SECRETO}`);
   if (!token) {
     console.log("Falta a cabeceira de autorización");
   }
-
   let tokenInfo;
-  
   try {
     tokenInfo = jwt.verify(token, process.env.SECRETO);
     return tokenInfo.dato
   } catch (e) {
+    console.log(e)
   }
 }
 

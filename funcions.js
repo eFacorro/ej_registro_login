@@ -18,7 +18,7 @@ const {
 const fs = require('fs');
 
 const path = require("path");
-const staticImg = path.join(__dirname, "static\\imgs\\");// sistema en windows
+const staticImg = path.join(__dirname, "static\\imgs\\");
 const carpetaStatic = path.join(__dirname, "static\\");
 
 const RexistroUser = async (req, res) => {
@@ -30,7 +30,6 @@ const RexistroUser = async (req, res) => {
   const doc = estructurarDatos(req.body);
   
   if (!req.files || Object.keys(req.files).length === 0) {
-    // return res.status(400).send("O ficheiro non foi actualizado.");
     dato = {
       msg : "Sin imagen personalizada"
     }
@@ -74,9 +73,6 @@ function borrarImg(req, res){
 
 const loginUser = (req, res, next) => {
   console.log("loginUser ",req.headers.authorization)
-  // if(req.headers.authorization != "null"){
-  //   console.log(comprobarToken(req, res));/// devuelte nombre de usuario o undefined si no coincide
-  // }
   comprobarLogin(req, res, next)
 }
 
@@ -87,7 +83,6 @@ const updateUser = (req, res, next) => {
   let dato;
   
   if (!req.files || Object.keys(req.files).length === 0) {
-    // return res.status(400).send("O ficheiro non foi actualizado.");
     dato = {
       msg : "Sin imagen personalizada"
     }
@@ -108,13 +103,11 @@ const updateUser = (req, res, next) => {
 }
 
 const deleteUser = (req, res, next) => {
-  console.log(req.body)
   borrarUsuario(req, res, next, req.body._id)
 }
 
 const mostrarPagina = async (req, res) => {
   const fs = require('node:fs/promises');
-  console.log("//mostrarPagina//")
   if (req.body.admin){
     const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Admin"});
@@ -183,7 +176,6 @@ const recibirToken = async (req, res) => {
   if(req.headers.authorization != "null"){
     let tokenInfo = comprobarToken(req.headers.authorization).user;
     if (req.params.user == tokenInfo){
-      console.log("tokenInfo recibirToken", tokenInfo);
       const perfil = await comprobarUser(tokenInfo, res, false);
       req.body = perfil;
       await mostrarPagina(req, res);
@@ -191,7 +183,6 @@ const recibirToken = async (req, res) => {
       res.send({status: true, user:{user: req.params}, public: true});
     }
   } else{
-    // res.send({status: false, user:{user: req.params}, public: true}); // asi solo puedes ver perfiles si estas registrado
     res.send({status: true, user:{user: req.params}, public: true});
   }
 }
@@ -199,9 +190,7 @@ const recibirToken = async (req, res) => {
 const checkToken = async (req, res) => {
   console.log("checkToken", req.headers.authorization);
   if(req.headers.authorization != "null"){
-    console.log("dentro")
     let tokenInfo = await comprobarToken(req.headers.authorization).user;
-    console.log("tokenInfo checkToken", tokenInfo);
     res.send({user: tokenInfo}); 
   }
 }

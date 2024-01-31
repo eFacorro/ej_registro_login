@@ -2,7 +2,11 @@ import {
   cargarUsuario,
   creoTarjeta,
   comunicandoServer,
-  configurador } from "./helpers.js";
+  configurador,
+  funcCheckNuewUser,
+  funcCheckPass,
+  funcCheckMail,
+  funcCheckRegistro } from "./helpers.js";
 
 let flatPwd = false;
 let flatUser = false;
@@ -92,33 +96,6 @@ function checkNewUser(){
   });
 }
 
-async function funcCheckNuewUser(newUser){
-  let result;
-  let ref = document.querySelector("#formRexistro > span");
-  if(newUser.value == ""){
-    ref.innerText = "El usuario es obligatorio";
-    ref.style.display = "block";
-    newUser.style.color = "red";
-    return true
-  } else {
-    let datos = {
-      endpoint: "/check",
-      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
-    }
-    result = await comunicandoServer(datos);
-    ref.innerText = result.msg;
-  }
-  if (result.status){
-    ref.style.display = "block";
-    newUser.style.color = "red";
-    return true
-  } else {
-    ref.style.display = "none";
-    newUser.style.color = "black";
-    return false
-  }
-}
-
 function checkPass(){
   let pass = document.querySelector("#formRexistro > input[name='pwd']");
   pass.addEventListener("change", (e) => {
@@ -128,19 +105,6 @@ function checkPass(){
   });
 }
 
-function funcCheckPass(pass){
-  let ref = document.querySelector("#formRexistro > span:nth-child(6)");
-  if(pass.value.length < 4){
-    ref.innerText = "Contraseña minima 4 caracteres";
-    ref.style.display = "block";
-    return true
-  } else {
-    ref.innerText = "";
-    ref.style.display = "none";
-    return false
-  }
-}
-
 function checkMail(){
   let mail = document.querySelector("#formRexistro > input[name='mail']");
   mail.addEventListener("change", async (e) => {
@@ -148,49 +112,6 @@ function checkMail(){
     flatMail = await funcCheckMail(mail);
     funcCheckRegistro(flatUser, flatPwd, flatMail);
   });
-}
-
-async function funcCheckMail(mail){
-  console.log("funcCheckMail", mail.value);
-  let result;
-  let ref = document.querySelector("#formRexistro > span:nth-child(4)");
-
-  var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
-  if (mail.value.match(validRegex)) {
-    console.log("formato de email correcto");
-    ref.innerText = "";
-    ref.style.display = "none";
-    let datos = {
-      endpoint: "/checkMail",
-      tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
-    }
-    result = await comunicandoServer(datos);
-    if (result.status){
-      ref.innerText = "Este email ya esta registrado";
-      ref.style.display = "block";
-      mail.style.color = "red";
-      return true
-    } else {
-      ref.innerText = "";
-      ref.style.display = "none";
-      mail.style.color = "black";
-      return false
-    }
-  } else {
-    console.log("formato de email incorrecto");
-    ref.innerText = "Formato de email incorrecto";
-    ref.style.display = "block";
-    return true
-  }
-}
-
-function funcCheckRegistro(flatUser, flatPwd, flatMail){
-  if(flatUser || flatPwd || flatMail){
-    rexistrarUsuario.disabled = true;
-  } else {
-    rexistrarUsuario.disabled = false;
-  }
 }
 
 function eventoEditar(id){

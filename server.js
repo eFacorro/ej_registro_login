@@ -35,11 +35,11 @@ app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);
 app.post("/checkMail", checkMail);
 app.put("/update", updateUser, borrarImg);
-app.post("/delete", deleteUser, borrarImg);  // con delete no funciona
+app.post("/delete", deleteUser, borrarImg);
 app.post("/checktoken", checkToken);
 app.get("/leertodo", LeerUsers);
 app.get("/verificar/:token", verifiMail);
-app.get("/:user", checkPerfil);   // falla el inicio de admin a veces
+app.get("/:user", checkPerfil);
 app.post("/:user", recibirToken);
 
 app.listen(3000, function () {

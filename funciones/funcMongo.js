@@ -13,7 +13,6 @@ async function insertarUsuario(usuario) {
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const result = await coll.insertOne(usuario);
-    console.log('en insertar datos: ',result);
     let respuesta = usuario;
     respuesta._id = result.insertedId;
     return respuesta
@@ -28,7 +27,6 @@ async function comprobarLogin(req, res, next) {
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const result = coll.find(req.body);
-
     for await(const key of result){
       if (key.pwd === req.body.pwd){
         req.body = key;
@@ -54,14 +52,13 @@ async function comprobarUser(usuario, res, check){
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const busqueda = {user: usuario};
-    const result = coll.find(busqueda);//(usuario);
-
+    const result = coll.find(busqueda);
     for await(const key of result){
       if (key.user === usuario){
         console.log("ya existe");
         if(check){
           res.send({status: true, msg: "El usuario ya existe"});
-          return   // arreglo fallo inicio sesion admin
+          return
         } else {
           return key
         }
@@ -81,14 +78,13 @@ async function comprobarMail(mail, res, check){
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const busqueda = {mail: mail};
-    const result = coll.find(busqueda);//(usuario);
-
+    const result = coll.find(busqueda);
     for await(const key of result){
       if (key.mail === mail){
         console.log("ya existe");
         if(check){
           res.send({status: true, msg: "El email ya esta rigistrado"});
-          return   // arreglo fallo inicio sesion admin
+          return
         } else {
           return key
         }
@@ -102,16 +98,13 @@ async function comprobarMail(mail, res, check){
   }
 }
 
-
 async function leerTodo() {
   try {
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const result = coll.find({})
-    
     let datosUsers = []
-    
     for await(const documento of result){
       datosUsers.push(documento)      
     }
@@ -124,19 +117,16 @@ async function leerTodo() {
 async function actualizarUsuario(req, res, next, datos) {
   let oldImg;
   try {
-    console.log('Estou en actualizarUsuario: ', datos)
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
     datos._id = new ObjectId(datos._id);
-    console.log(datos._id);
     const filtro ={
         _id: datos._id
     }
     oldImg = await coll.findOne(filtro);
-    console.log(oldImg)
     const dato = {$set: datos};
-    const reset = {$unset: {user:"", pwd: "", nombre: "", primerApellido: "", segundoApellido: "", fechaNacimiento: ""}}
+    const reset = {$unset: {nombre: "", primerApellido: "", segundoApellido: "", fechaNacimiento: ""}}
     const resultReset = await coll.updateOne(filtro,reset);
     console.log(resultReset);
     const result = await coll.updateOne(filtro,dato);
@@ -150,7 +140,6 @@ async function actualizarUsuario(req, res, next, datos) {
  
 async function borrarUsuario(req, res, next, id) {
   try {
-    console.log('Estou en BorrarUsuario: ',id)
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -167,15 +156,19 @@ async function borrarUsuario(req, res, next, id) {
 }
 
 async function emailVerificado(mail){
-  await client.connect();
-  const db = client.db(database);
-  const coll = db.collection(coleccion);
-  const filtro ={
-      mail: mail
+  try {
+    await client.connect();
+    const db = client.db(database);
+    const coll = db.collection(coleccion);
+    const filtro ={
+        mail: mail
+    }
+    const dato = {$set: {mailVerificado: true}};
+    const result = await coll.updateOne(filtro, dato);
+    console.log(result)
+  } finally {
+    await client.close();
   }
-  const dato = {$set: {mailVerificado: true}};
-  const result = await coll.updateOne(filtro, dato);
-  console.log(result);
 }
 
 module.exports = {
