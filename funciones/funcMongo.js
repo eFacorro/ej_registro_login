@@ -164,8 +164,10 @@ async function emailVerificado(mail){
         mail: mail
     }
     const dato = {$set: {mailVerificado: true}};
-    const result = await coll.updateOne(filtro, dato);
+    let result = await coll.updateOne(filtro, dato);
     console.log(result)
+    result = await coll.findOne(filtro);
+    return result
   } finally {
     await client.close();
   }
