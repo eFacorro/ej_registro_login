@@ -47,7 +47,6 @@ function loginUser(){
       tipoComunicacion: {method: "POST", body: new FormData(formLogin), headers: {"authorization": token} }
     }
     let result = await comunicandoServer(datos);
-    // console.log(result);
     if(result.token != undefined){
       localStorage.setItem('token', result.token);
       location.replace("/" + result.user.user);
@@ -72,7 +71,6 @@ function registroUser(){
       tipoComunicacion: {method: "POST", body: new FormData(formRexistro)}
     }
     let result = await comunicandoServer(datos);
-      // console.log("resposta de rexistrarUsuario: ", result);
       formRexistro.reset();
       if(rexistrarUsuario.value === "admin"){
         creoTarjeta(result.user);
@@ -80,7 +78,7 @@ function registroUser(){
       else {
         localStorage.setItem('token', result.token);
         // location.replace("./" + result.user.user)  // insertar pagina despues de registrarse
-        document.querySelector("html").innerHTML = result.html;
+        document.querySelector("html").innerHTML = result.html;  // pedir verificacion de mail despues de registrarse
         salir();
       }
     }
@@ -140,7 +138,6 @@ function eventoEditar(id){
     e.preventDefault();
     let imgFile = e.target.files[0];
     let datosImg = URL.createObjectURL(imgFile);
-    console.log(datosImg)
     editoImg.setAttribute("src", datosImg);
   });
 }

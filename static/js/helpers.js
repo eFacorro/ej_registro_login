@@ -12,13 +12,11 @@ import {
 const comunicandoServer = async (datos)=>{
   let response;
   if(datos.tipoComunicacion !== undefined){
-      console.log('entra en POST',datos)
-      response = await fetch(datos.endpoint,datos.tipoComunicacion);//'POST'
+      response = await fetch(datos.endpoint,datos.tipoComunicacion);
   }else{
-      response = await fetch(datos.endpoint);// 'GET'
+      response = await fetch(datos.endpoint);
   }
   let resposta = await response.json();
-  console.log("comunicandoServer ", resposta)
   return resposta
 }
 
@@ -204,7 +202,6 @@ async function enviarToken(){
     tipoComunicacion: {method: "POST", headers: {"authorization": token}}
   }
   let result = await comunicandoServer(datos);
-  console.log(result)
   if(result.user != ""){
     location.replace("./" + result.user);
   }
@@ -232,7 +229,6 @@ function configurador(result){
       location.replace("/")
     } else {
       let ref = document.querySelector("#formLogin > span");
-      console.log("else ", result.msg);
       ref.innerText = result.msg;
       ref.style.display = "block";
       return
@@ -284,14 +280,12 @@ function funcCheckPass(pass){
 }
 
 async function funcCheckMail(mail){
-  console.log("funcCheckMail", mail.value);
   let result;
   let ref = document.querySelector("#formRexistro > span:nth-child(4)");
 
   var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   if (mail.value.match(validRegex)) {
-    console.log("formato de email correcto");
     ref.innerText = "";
     ref.style.display = "none";
     let datos = {
@@ -311,7 +305,6 @@ async function funcCheckMail(mail){
       return false
     }
   } else {
-    console.log("formato de email incorrecto");
     ref.innerText = "Formato de email incorrecto";
     ref.style.display = "block";
     return true

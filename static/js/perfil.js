@@ -7,7 +7,6 @@ async function perfil(){
   let insertHtml = document.querySelector(".lista-usuarios");
   let usuario = JSON.parse(insertHtml.innerText);
   insertHtml.innerText = "";
-  console.log(usuario);
   creoTarjetaPublica(usuario);
   let token = localStorage.getItem('token');
   let datos = {
@@ -15,7 +14,6 @@ async function perfil(){
     tipoComunicacion: {method: "POST", body: {"user": usuario.user}, headers: {"authorization": token}}
   };
   let result = await comunicandoServer(datos);
-  console.log("flex ", result);
   configurador(result);
 }
 
