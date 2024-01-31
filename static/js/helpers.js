@@ -311,11 +311,51 @@ async function funcCheckMail(mail){
   }
 }
 
+async function funcCheckMailPass(mail){
+  let result;
+  let ref = document.querySelector("#formPass > span:nth-child(2)");
+
+  var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+  if (mail.value.match(validRegex)) {
+    ref.innerText = "";
+    ref.style.display = "none";
+    let datos = {
+      endpoint: "/checkMail",
+      tipoComunicacion: {method: "POST", body: new FormData(formPass)}
+    }
+    result = await comunicandoServer(datos);
+    if (result.status){
+      ref.innerText = "";
+      ref.style.display = "none";
+      mail.style.color = "black";
+      return true
+    } else {
+      ref.innerText = "Este email no esta registrado";
+      ref.style.display = "block";
+      mail.style.color = "red";
+      return false
+    }
+  } else {
+    ref.innerText = "Formato de email incorrecto";
+    ref.style.display = "block";
+    return false
+  }
+}
+
 function funcCheckRegistro(flatUser, flatPwd, flatMail){
   if(flatUser || flatPwd || flatMail){
     rexistrarUsuario.disabled = true;
   } else {
     rexistrarUsuario.disabled = false;
+  }
+}
+
+function funcCheckSendMailPass(mailPass){
+  if(mailPass){
+    sendPass.disabled = false;
+  } else {
+    sendPass.disabled = true;
   }
 }
 
@@ -329,5 +369,7 @@ export {
   funcCheckNuewUser,
   funcCheckPass,
   funcCheckMail,
-  funcCheckRegistro
+  funcCheckRegistro,
+  funcCheckMailPass,
+  funcCheckSendMailPass
 }

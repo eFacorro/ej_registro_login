@@ -6,11 +6,14 @@ import {
   funcCheckNuewUser,
   funcCheckPass,
   funcCheckMail,
-  funcCheckRegistro } from "./helpers.js";
+  funcCheckRegistro,
+  funcCheckMailPass,
+  funcCheckSendMailPass } from "./helpers.js";
 
 let flatPwd = false;
 let flatUser = false;
 let flatMail = false;
+let mailPass = false;
 
 function botonRegistro(){
   registroSpan.addEventListener("click", (e) => {
@@ -109,6 +112,32 @@ function checkMail(){
     e.preventDefault();
     flatMail = await funcCheckMail(mail);
     funcCheckRegistro(flatUser, flatPwd, flatMail);
+  });
+}
+
+
+function checkRestPass(){
+  let mail = document.querySelector("#formPass > input[name='mail']");
+  mail.addEventListener("change", async (e) => {
+    e.preventDefault();
+    mailPass = await funcCheckMailPass(mail);
+    funcCheckSendMailPass(mailPass);
+  });
+}
+
+function sendMailPass(){
+  sendPass.addEventListener("click", async (e) => {
+    e.preventDefault();
+    let mail = document.querySelector("#formPass > input[name='mail']");
+    mailPass = await funcCheckMailPass(mail);
+    funcCheckSendMailPass(mailPass);
+    if(mailPass){
+      let datos = {
+        endpoint: "/resetpass",
+        tipoComunicacion: {method: "POST", body: new FormData(formPass)}
+      }
+      let result = await comunicandoServer(datos);
+    }
   });
 }
 
@@ -220,5 +249,7 @@ export {
   eventoRecargar,
   checkPass,
   salir,
-  checkMail
+  checkMail,
+  checkRestPass,
+  sendMailPass
 }

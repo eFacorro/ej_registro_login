@@ -13,7 +13,11 @@ const {
   borrarImg,
   checkToken,
   verifiMail,
-  checkMail } = require("./funcions.js");
+  checkMail,
+  resetPass,
+  resetMail,
+  verifiPass,
+  changePass } = require("./funcions.js");
 
 const express = require("express");
 const path = require("path");
@@ -39,6 +43,10 @@ app.post("/delete", deleteUser, borrarImg);
 app.post("/checktoken", checkToken);
 app.get("/leertodo", LeerUsers);
 app.get("/verificar/:token", verifiMail);
+app.get("/resetpass", resetPass);
+app.post("/resetpass", resetMail);
+app.get("/changepass/:token", verifiPass);
+app.post("/changepass", changePass);
 app.get("/:user", checkPerfil);
 app.post("/:user", recibirToken);
 

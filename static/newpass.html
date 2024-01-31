@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recuperar contraseña</title>
+    <link rel="stylesheet" href="../estilos/recuperar.css">
+  </head>
+  <body>
+    <div>
+      <h1>Recuperar contraseña</h1>
+      <form id="formPass" name="Login" enctype="multipart/form-data">
+        <input name="pwd" type="password" placeholder="Nueva Contraseña" />
+        <span></span>
+        <button id="sendPass">Enviar</button>
+      </form>
+    </div>
+  <script>
+    let ref = document.querySelector("#formPass > span:nth-child(2)");
+    let pass = document.querySelector("#formPass > input[name='pwd']");
+    pass.addEventListener("change", (e) => {
+      e.preventDefault();
+      checkPass(pass);
+    });
+    function checkPass(pass){
+      if(pass.value.length < 4){
+        ref.innerText = "Contraseña minima 4 caracteres";
+        ref.style.display = "block";
+        sendPass.disabled = true;
+        return false;
+      } else {
+        ref.innerText = "";
+        ref.style.display = "none";
+        sendPass.disabled = false;
+        return true;
+      }
+    }
+    sendPass.addEventListener("click", async (e) => {
+      e.preventDefault();
+      let pass = document.querySelector("#formPass > input[name='pwd']");
+      if(checkPass(pass)){
+        let datos = {
+          endpoint: "/changepass",
+          tipoComunicacion: {method: "POST", body: new FormData(formPass), headers: {"authorization": "token"}}
+        }
+        let result = await fetch(datos.endpoint,datos.tipoComunicacion)
+        location.replace("../");
+      }
+    });
+  </script>
+</html>

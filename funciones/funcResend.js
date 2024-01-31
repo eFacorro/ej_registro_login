@@ -1,6 +1,8 @@
 const {
   jwtToken } = require("./funcJWT.js");
 
+  /// enviar emails con resend con dominio propio ///
+  /// limitacion de emails por dia y mes ///
 const { Resend } = require('resend');
 const resend = new Resend(process.env.RESEND_TOKEN);
 

@@ -13,7 +13,8 @@ const {
   comprobarToken } = require("./funciones/funcJWT.js");
     
 const {
-  emailVerificacion } = require("./funciones/funcResend.js");
+  emailVerificacion,
+  emailPass } = require("./funciones/funcNodemailer.js");
 
 const fs = require('fs');
 
@@ -203,6 +204,42 @@ async function verifiMail(req, res){
     res.send('<script>location.replace("../");</script>')
   }
 }
+
+async function verifiPass(req, res){
+  if(req.params.token != "cambiacontraseña"){
+    const fs = require('node:fs/promises');
+    let mail = await comprobarToken(req.params.token).mail;
+    console.log("verifiPass", mail);
+    if(mail != ""){
+      emailVerificado(mail);
+      let userFile = await fs.readFile(carpetaStatic + "\\newpass.html", 'utf8');
+      userFile = userFile.replace("token", req.params.token);
+      res.send(userFile);
+    }
+  } else {
+    res.status(200)
+  }
+}
+
+async function changePass(req, res){
+  let mail = await comprobarToken(req.headers.authorization).mail;
+  console.log("changePass", req.body.pwd);
+  if(mail != ""){
+    console.log("new pass");
+    res.status(200).send();
+  }
+}
+
+async function resetPass(req, res){
+  const fs = require('node:fs/promises');
+  const userFile = await fs.readFile(carpetaStatic + "\\recuperar.html", 'utf8');
+  res.send(userFile);
+}
+
+async function resetMail(req, res){
+  console.log(req.body.mail)
+  emailPass(req.body.mail);
+}
  
 module.exports = {
   RexistroUser,
@@ -218,5 +255,9 @@ module.exports = {
   borrarImg,
   checkToken,
   verifiMail,
-  checkMail
+  checkMail,
+  resetPass,
+  resetMail,
+  verifiPass,
+  changePass
 };
