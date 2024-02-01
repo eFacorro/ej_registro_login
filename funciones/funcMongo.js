@@ -3,6 +3,9 @@ const {
   ObjectId,
   ServerApiVersion } = require("mongodb");
 
+let cooldown;
+const time = 2000;
+
 const url = process.env.URLMONGO;
 const database = process.env.BBDD;
 const coleccion = process.env.COLECCION;
@@ -16,6 +19,7 @@ const client = new MongoClient(url, {
 
 async function insertarUsuario(usuario) {
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -25,11 +29,13 @@ async function insertarUsuario(usuario) {
     return respuesta
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function comprobarLogin(req, res, next) {
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -50,11 +56,13 @@ async function comprobarLogin(req, res, next) {
     res.send({status: false, msg: "Usuario y/o contraseña incorrectos"});
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function comprobarUser(usuario, res, check){
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -76,11 +84,13 @@ async function comprobarUser(usuario, res, check){
     }
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function comprobarMail(mail, res, check){
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -102,11 +112,13 @@ async function comprobarMail(mail, res, check){
     }
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function leerTodo() {
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -118,12 +130,14 @@ async function leerTodo() {
     return datosUsers
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function actualizarUsuario(req, res, next, datos) {
   let oldImg;
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -139,7 +153,8 @@ async function actualizarUsuario(req, res, next, datos) {
     const result = await coll.updateOne(filtro,dato);
     console.log(result);
   } finally {
-    // await client.close(); 
+    // await client.close();
+    cooldown = setTimeout(timerClose,time);
     req.body.img = oldImg.img;
     next();
   }
@@ -147,6 +162,7 @@ async function actualizarUsuario(req, res, next, datos) {
  
 async function borrarUsuario(req, res, next, id) {
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -158,12 +174,14 @@ async function borrarUsuario(req, res, next, id) {
     result = await coll.deleteOne(dato);
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
     next();
   }
 }
 
 async function emailVerificado(mail){
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -177,11 +195,13 @@ async function emailVerificado(mail){
     return result
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
 }
 
 async function saveNewPass(mail, pwd){
   try {
+    clearTimeout(cooldown);
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
@@ -195,7 +215,12 @@ async function saveNewPass(mail, pwd){
     return result
   } finally {
     // await client.close();
+    cooldown = setTimeout(timerClose,time);
   }
+}
+
+async function timerClose(){
+  await client.close();
 }
 
 module.exports = {
