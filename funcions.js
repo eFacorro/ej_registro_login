@@ -74,12 +74,12 @@ function borrarImg(req, res){
   res.send({msg: "hecho"})
 }
 
-const loginUser = (req, res, next) => {
+const loginUser = async (req, res, next) => {
   console.log("loginUser ",req.headers.authorization)
-  comprobarLogin(req, res, next)
+  await comprobarLogin(req, res, next)
 }
 
-const updateUser = (req, res, next) => {
+const updateUser = async (req, res, next) => {
   let sampleFile;
   let img = "default.png";
   let uploadPath; 
@@ -102,11 +102,11 @@ const updateUser = (req, res, next) => {
     });
   }
   req.body.img = img;
-  actualizarUsuario(req, res, next, estructurarDatos(req.body));
+  await actualizarUsuario(req, res, next, estructurarDatos(req.body));
 }
 
-const deleteUser = (req, res, next) => {
-  borrarUsuario(req, res, next, req.body._id)
+const deleteUser = async (req, res, next) => {
+  await borrarUsuario(req, res, next, req.body._id)
 }
 
 const mostrarPagina = async (req, res) => {
@@ -215,7 +215,7 @@ async function verifiPass(req, res){
   let mail = await comprobarToken(req.params.token).mail;
   console.log("verifiPass", mail);
   if(mail != ""){
-    emailVerificado(mail);
+    await emailVerificado(mail);
     let userFile = await fs.readFile(carpetaStatic + "/newpass.html", 'utf8');
     userFile = userFile.replace("token", req.params.token);
     res.send(userFile);
