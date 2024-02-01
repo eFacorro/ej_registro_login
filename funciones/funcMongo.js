@@ -1,11 +1,18 @@
 const {
   MongoClient,
-  ObjectId} = require("mongodb");
+  ObjectId,
+  ServerApiVersion } = require("mongodb");
 
 const url = process.env.URLMONGO;
 const database = process.env.BBDD;
 const coleccion = process.env.COLECCION;
-const client = new MongoClient(url);
+const client = new MongoClient(url, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 async function insertarUsuario(usuario) {
   try {
