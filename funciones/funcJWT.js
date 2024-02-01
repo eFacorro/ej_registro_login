@@ -4,7 +4,7 @@ const crearToken = (req, res, next, datos)=>{
   console.log(req.headers.referer);
   let token = jwtToken(datos)
   req.token = token;
-  next();
+  next(); 
 }
 
 function jwtToken(datos){
