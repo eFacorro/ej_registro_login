@@ -66,7 +66,7 @@ function borrarImg(req, res){
     let imgPath = staticImg + req.body.img;
     fs.unlink(imgPath, (err) => {
       if (err) {
-        throw err;
+        console.log("borrar imagen",err)
       }
       console.log(`imgen ${req.body.img} borrada`);
     });
