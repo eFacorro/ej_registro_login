@@ -75,8 +75,8 @@ function borrarImg(req, res){
 }
 
 const loginUser = async (req, res, next) => {
-  console.log("loginUser ",req.headers.authorization)
-  await comprobarLogin(req, res, next)
+  console.log("loginUser ",req.headers.authorization);
+  await comprobarLogin(req, res, next);
 }
 
 const updateUser = async (req, res, next) => {
@@ -169,9 +169,9 @@ const checkPerfil = async (req, res) => {
   }
 }
 
-const enviarToken = (req, res, next) => {
+const enviarToken = async (req, res, next) => {
   let datos = {user: req.body.user, pwd: req.body.pwd};
-  crearToken(req, res, next, datos);
+  await crearToken(req, res, next, datos);
 }
 
 const recibirToken = async (req, res) => {
