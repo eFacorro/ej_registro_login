@@ -4,7 +4,7 @@ const {
   ServerApiVersion } = require("mongodb");
 
 let cooldown;
-const time = 2000;
+const time = 10;
 
 const url = process.env.URLMONGO;
 const database = process.env.BBDD;
