@@ -221,6 +221,7 @@ async function saveNewPass(mail, pwd){
 
 async function timerClose(){
   await client.close();
+  console.log("mongoCerrado", time)
 }
 
 module.exports = {
