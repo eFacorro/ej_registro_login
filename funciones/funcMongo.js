@@ -3,7 +3,7 @@ const {
   ObjectId,
   ServerApiVersion } = require("mongodb");
 
-const { emailVerificacion } = require("./funciones/funcNodemailer.js");
+const { emailVerificacion } = require("./funcNodemailer.js");
 
 let cooldown;
 const time = 500;
