@@ -148,6 +148,7 @@ async function actualizarUsuario(req, res, next, datos) {
         _id: datos._id
     }
     old = await coll.findOne(filtro);
+    delete datos.usuario;
     const dato = {$set: datos};
     const reset = {$unset: {nombre: "", primerApellido: "", segundoApellido: "", fechaNacimiento: ""}}
     const resultReset = await coll.updateOne(filtro,reset);
