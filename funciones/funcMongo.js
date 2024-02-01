@@ -24,7 +24,7 @@ async function insertarUsuario(usuario) {
     respuesta._id = result.insertedId;
     return respuesta
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -49,7 +49,7 @@ async function comprobarLogin(req, res, next) {
     console.log("usuario y/o contraseña incorrectos");
     res.send({status: false, msg: "Usuario y/o contraseña incorrectos"});
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -75,7 +75,7 @@ async function comprobarUser(usuario, res, check){
       res.send({status: false, msg: "El usuario es nuevo"});
     }
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -101,7 +101,7 @@ async function comprobarMail(mail, res, check){
       res.send({status: false, msg: "El email es nuevo"});
     }
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -117,7 +117,7 @@ async function leerTodo() {
     }
     return datosUsers
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -139,7 +139,7 @@ async function actualizarUsuario(req, res, next, datos) {
     const result = await coll.updateOne(filtro,dato);
     console.log(result);
   } finally {
-    await client.close(); 
+    // await client.close(); 
     req.body.img = oldImg.img;
     next();
   }
@@ -157,7 +157,7 @@ async function borrarUsuario(req, res, next, id) {
     req.body.img = result.img;
     result = await coll.deleteOne(dato);
   } finally {
-    await client.close();
+    // await client.close();
     next();
   }
 }
@@ -176,7 +176,7 @@ async function emailVerificado(mail){
     result = await coll.findOne(filtro);
     return result
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
@@ -194,7 +194,7 @@ async function saveNewPass(mail, pwd){
     result = await coll.findOne(filtro);
     return result
   } finally {
-    await client.close();
+    // await client.close();
   }
 }
 
