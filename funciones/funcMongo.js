@@ -106,18 +106,18 @@ async function comprobarMail(mail, res, check){
 }
 
 async function leerTodo() {
-  let datosUsers = []
   try {
     await client.connect();
     const db = client.db(database);
     const coll = db.collection(coleccion);
     const result = coll.find({})
+    let datosUsers = []
     for await(const documento of result){
       datosUsers.push(documento);
     }
+    return datosUsers
   } finally {
     await client.close();
-    return datosUsers
   }
 }
 
