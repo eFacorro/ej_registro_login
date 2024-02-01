@@ -50,6 +50,6 @@ app.post("/changepass", changePass);
 app.get("/:user", checkPerfil);
 app.post("/:user", recibirToken);
 
-app.listen(3000, function () {
+app.listen(process.env.PORT, function () {
   console.log("Server running");
 });
