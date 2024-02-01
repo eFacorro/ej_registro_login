@@ -44,8 +44,10 @@ function loginUser(){
     let userOMail = document.querySelector("#formLogin > input[name='user']");
     var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (userOMail.value.match(validRegex)){
-      console.log("mail", userOMail)
+      console.log("mail", userOMail.value)
       userOMail.setAttribute("name", "mail");
+    } else {
+      console.log("user", userOMail.value)
     }
     let datos = {
       endpoint: "/login",
