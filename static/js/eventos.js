@@ -41,8 +41,9 @@ function loginUser(){
   loginUsuario.addEventListener("click", async (e) => {
     e.preventDefault();
     let token = localStorage.getItem('token');
-    let userOMail = document.querySelector("#formLogin > input[name='user']")
-    if (!funcCheckMailPass(userOMail)){
+    let userOMail = document.querySelector("#formLogin > input[name='user']");
+    var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (userOMail.value.match(validRegex)){
       console.log("mail", userOMail)
       userOMail.setAttribute("name", "mail");
     }
