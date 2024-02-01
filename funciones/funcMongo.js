@@ -3,6 +3,8 @@ const {
   ObjectId,
   ServerApiVersion } = require("mongodb");
 
+const { emailVerificacion } = require("./funciones/funcNodemailer.js");
+
 let cooldown;
 const time = 500;
 
@@ -135,7 +137,7 @@ async function leerTodo() {
 }
 
 async function actualizarUsuario(req, res, next, datos) {
-  let oldImg;
+  let old;
   try {
     clearTimeout(cooldown);
     await client.connect();
@@ -145,17 +147,21 @@ async function actualizarUsuario(req, res, next, datos) {
     const filtro ={
         _id: datos._id
     }
-    oldImg = await coll.findOne(filtro);
+    old = await coll.findOne(filtro);
     const dato = {$set: datos};
     const reset = {$unset: {nombre: "", primerApellido: "", segundoApellido: "", fechaNacimiento: ""}}
     const resultReset = await coll.updateOne(filtro,reset);
     console.log(resultReset);
+    if(old.mail != datos.mail){
+      datos.mailVerificado = false;
+      emailVerificacion(datos.mail);
+    }
     const result = await coll.updateOne(filtro,dato);
     console.log(result);
   } finally {
     // await client.close();
     cooldown = setTimeout(timerClose,time);
-    req.body.img = oldImg.img;
+    req.body.img = old.img;
     next();
   }
 }
