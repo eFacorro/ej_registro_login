@@ -42,7 +42,8 @@ function loginUser(){
     e.preventDefault();
     let token = localStorage.getItem('token');
     let userOMail = document.querySelector("#formLogin > input[name='user']")
-    if (!funcCheckMail(userOMail)){
+    if (!funcCheckMailPass(userOMail)){
+      console.log("mail", userOMail)
       userOMail.setAttribute("name", "mail");
     }
     let datos = {
