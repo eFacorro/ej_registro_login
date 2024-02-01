@@ -99,9 +99,13 @@ const updateUser = async (req, res, next) => {
     img = req.body.user + req.files.usuario.name.slice(req.files.usuario.name.indexOf("."));
     uploadPath = staticImg + img;
     sampleFile.mv(uploadPath, function (err) {
-      if (err) return res.status(500).send(err);
-      dato = {
-        msg : "Imagen guardada"
+      if (err) {
+        return res.status(500).send(err);
+      } else {
+        console.log("Imagen guardada");
+        dato = {
+          msg : "Imagen guardada"
+        }
       }
     });
   }
