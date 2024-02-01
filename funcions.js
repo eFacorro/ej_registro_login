@@ -177,7 +177,7 @@ const enviarToken = async (req, res, next) => {
 const recibirToken = async (req, res) => {
   console.log("recibirToken", req.params);
   if(req.headers.authorization != "null"){
-    let tokenInfo = comprobarToken(req.headers.authorization).user;
+    let tokenInfo = await comprobarToken(req.headers.authorization).user;
     if (req.params.user == tokenInfo){
       const perfil = await comprobarUser(tokenInfo, res, false);
       req.body = perfil;
