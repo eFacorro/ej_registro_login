@@ -21,8 +21,8 @@ const {
 const fs = require('fs');
 
 const path = require("path");
-const staticImg = path.join(__dirname, "static\\imgs\\");
-const carpetaStatic = path.join(__dirname, "static\\");
+const staticImg = path.join(__dirname, "static/imgs/");
+const carpetaStatic = path.join(__dirname, "static/");
 
 const RexistroUser = async (req, res) => {
   let sampleFile;
@@ -54,7 +54,7 @@ const RexistroUser = async (req, res) => {
   dato.user = user;
   dato.token = req.token;    // si hay que añadir el token a la bbdd hay que modificar esto
   const fs = require('node:fs/promises');
-  const userFile = await fs.readFile(carpetaStatic + "\\verifica.html", 'utf8');
+  const userFile = await fs.readFile(carpetaStatic + "/verifica.html", 'utf8');
   dato.html = userFile;
   console.log("mail", dato.user.mail);
   emailVerificacion(dato.user.mail);
@@ -112,10 +112,10 @@ const deleteUser = (req, res, next) => {
 const mostrarPagina = async (req, res) => {
   const fs = require('node:fs/promises');
   if (req.body.admin){
-    const userFile = await fs.readFile(carpetaStatic + "\admin.html", 'utf8');
+    const userFile = await fs.readFile(carpetaStatic + "/admin.html", 'utf8');
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Admin"});
   } else {
-    const userFile = await fs.readFile(carpetaStatic + "\perfil.html", 'utf8');
+    const userFile = await fs.readFile(carpetaStatic + "/perfil.html", 'utf8');
     res.send({status: true, html: userFile, user: req.body, token: req.token, msg: "Usuario y contraseña correctos"});
   }
 }
@@ -153,17 +153,17 @@ const checkPerfil = async (req, res) => {
         delete perfil.pwd
         delete perfil.mail
         if(perfil.mailVerificado){
-          let userFile = await fs.readFile(carpetaStatic + "\\buscador.html", 'utf8');
+          let userFile = await fs.readFile(carpetaStatic + "/buscador.html", 'utf8');
           userFile = userFile.replace("USER", JSON.stringify(perfil));
           userFile = userFile.replace("Buscador", perfil.user);
           res.send(userFile);
         } else{
-          const userFile = await fs.readFile(carpetaStatic + "\\noverficado.html", 'utf8');
+          const userFile = await fs.readFile(carpetaStatic + "/noverficado.html", 'utf8');
           res.send(userFile);
         }
       } else {
         console.log("El usuario no existe");
-        let userFile = await fs.readFile(carpetaStatic + "\\nouser.html", 'utf8');
+        let userFile = await fs.readFile(carpetaStatic + "/nouser.html", 'utf8');
         res.send(userFile);
       }
   }
@@ -216,7 +216,7 @@ async function verifiPass(req, res){
   console.log("verifiPass", mail);
   if(mail != ""){
     emailVerificado(mail);
-    let userFile = await fs.readFile(carpetaStatic + "\\newpass.html", 'utf8');
+    let userFile = await fs.readFile(carpetaStatic + "/newpass.html", 'utf8');
     userFile = userFile.replace("token", req.params.token);
     res.send(userFile);
   }
@@ -236,7 +236,7 @@ async function changePass(req, res){
 
 async function resetPass(req, res){
   const fs = require('node:fs/promises');
-  const userFile = await fs.readFile(carpetaStatic + "\\recuperar.html", 'utf8');
+  const userFile = await fs.readFile(carpetaStatic + "/recuperar.html", 'utf8');
   res.send(userFile);
 }
 
