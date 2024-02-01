@@ -15,7 +15,7 @@ const {
   verifiMail,
   checkMail,
   resetPass,
-  resetMail,
+  resetMail, 
   verifiPass,
   changePass } = require("./funcions.js");
 
