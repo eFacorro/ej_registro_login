@@ -14,8 +14,8 @@ const nodemailer = require('nodemailer');
 // });
 
 let transporter = nodemailer.createTransport({    // https://youtu.be/TvOfrZnaunQ?t=127
-host: "smtp.zoho.eu", // "stmp.google.com",
-port: 465 ,
+host: process.env.MAIL_HOST, // "stmp.google.com",
+port: process.env.MAIL_PORT,
 secure: true,
 auth: {
     user: process.env.MAIL_USERNAME,
