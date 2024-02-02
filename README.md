@@ -1,1 +1,2 @@
-# ej_registro_login
+# Proba práctica 
+### Opción B:
