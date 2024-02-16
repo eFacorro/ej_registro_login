@@ -17,7 +17,8 @@ const {
   resetPass,
   resetMail, 
   verifiPass,
-  changePass } = require("./funcions.js");
+  changePass,
+  ip } = require("./funcions.js");
 
 const express = require("express");
 const path = require("path");
@@ -34,6 +35,7 @@ const carpetaStatic = path.join(__dirname, "static");
 
 app.use(express.static(carpetaStatic));
 
+app.get("/", ip)
 app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);

@@ -252,6 +252,12 @@ async function resetMail(req, res){
   console.log(req.body.mail)
   emailPass(req.body.mail);
 }
+
+function ip(req, res){
+  const ipAddress = req.socket.remoteAddress;
+  console.log("ip", ipAddress)
+  res.send(ipAddress);
+}
  
 module.exports = {
   RexistroUser,
@@ -271,5 +277,6 @@ module.exports = {
   resetPass,
   resetMail,
   verifiPass,
-  changePass
+  changePass,
+  ip
 };
