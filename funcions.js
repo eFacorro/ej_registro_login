@@ -254,7 +254,7 @@ async function resetMail(req, res){
 }
 
 function ip(req, res){
-  const ipAddress = req.socket.remoteAddress;
+  const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
   console.log("ip", ipAddress)
   res.send(ipAddress);
 }
