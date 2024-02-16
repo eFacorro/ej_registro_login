@@ -35,7 +35,6 @@ const carpetaStatic = path.join(__dirname, "static");
 
 app.use(express.static(carpetaStatic));
 
-app.get("/ip", ip)
 app.post("/rexistro", enviarToken, RexistroUser);
 app.post("/login", loginUser, enviarToken, mostrarPagina);
 app.post("/check", checkUser);

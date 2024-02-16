@@ -252,12 +252,6 @@ async function resetMail(req, res){
   console.log(req.body.mail)
   emailPass(req.body.mail);
 }
-
-function ip(req, res){
-  const ipAddress = req.header('x-forwarded-for') || req.socket.remoteAddress;
-  console.log("ip", ipAddress)
-  res.send(ipAddress);
-}
  
 module.exports = {
   RexistroUser,
