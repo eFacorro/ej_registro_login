@@ -17,8 +17,7 @@ const {
   resetPass,
   resetMail, 
   verifiPass,
-  changePass,
-  ip } = require("./funcions.js");
+  changePass } = require("./funcions.js");
 
 const express = require("express");
 const path = require("path");

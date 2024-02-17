@@ -271,6 +271,5 @@ module.exports = {
   resetPass,
   resetMail,
   verifiPass,
-  changePass,
-  ip
+  changePass
 };
