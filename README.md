@@ -1,2 +1,1 @@
-# Proba práctica 
-### Opción B:
+## Ejercicio para Formacion en Academia Postal
