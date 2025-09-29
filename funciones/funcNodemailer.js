@@ -16,7 +16,8 @@ const nodemailer = require('nodemailer');
 let transporter = nodemailer.createTransport({    // https://youtu.be/TvOfrZnaunQ?t=127
 host: process.env.MAIL_HOST, // "stmp.google.com",
 port: process.env.MAIL_PORT,
-// secure: true,
+secure: false,
+requireTLS: true, 
 auth: {
     user: process.env.MAIL_USERNAME,
     pass: process.env.PASS,
